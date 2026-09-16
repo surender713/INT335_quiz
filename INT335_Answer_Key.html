@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INT335 CA Practice — Answer Key</title>
+<style>
+  :root {
+    --ink: #1c2530;
+    --ink-soft: #5b6672;
+    --accent: #3a5fcd;
+    --green: #1e8e5a;
+    --green-bg: #eaf7f0;
+    --border: #dfe3ea;
+    --bg: #f7f8fa;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Georgia, 'Times New Roman', serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.55;
+  }
+  .wrap {
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 36px 24px 80px;
+  }
+  header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 3px solid var(--accent);
+  }
+  header h1 {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 1.6rem;
+    margin: 0 0 6px;
+    color: var(--ink);
+  }
+  header p {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--ink-soft);
+    margin: 0;
+    font-size: 0.95rem;
+  }
+  nav.toc {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 26px;
+    margin-bottom: 36px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  nav.toc h2 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-soft);
+    margin: 0 0 12px;
+  }
+  nav.toc ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  nav.toc li {
+    margin-bottom: 8px;
+    font-size: 1rem;
+  }
+  nav.toc a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  nav.toc a:hover { text-decoration: underline; }
+  .toc-count {
+    color: var(--ink-soft);
+    font-weight: 400;
+    font-size: 0.88rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  section {
+    margin-bottom: 44px;
+  }
+  section h2 {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 1.25rem;
+    color: #fff;
+    background: var(--accent);
+    padding: 12px 18px;
+    border-radius: 8px;
+    margin: 0 0 22px;
+    position: sticky;
+    top: 0;
+  }
+  .qblock {
+    display: flex;
+    gap: 14px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 16px;
+  }
+  .qnum {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    color: var(--accent);
+    flex-shrink: 0;
+    font-size: 1.05rem;
+    min-width: 40px;
+  }
+  .qbody { flex: 1; min-width: 0; }
+  .qtext {
+    font-weight: 700;
+    margin: 0 0 12px;
+    font-size: 1.02rem;
+  }
+  ul.opts {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 12px;
+  }
+  ul.opts li {
+    padding: 6px 10px;
+    margin-bottom: 4px;
+    border-radius: 6px;
+    font-size: 0.96rem;
+  }
+  ul.opts li.correct-opt {
+    background: var(--green-bg);
+    color: var(--green);
+    font-weight: 700;
+  }
+  .answer-line {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--green);
+    margin: 10px 0 8px;
+    font-size: 0.92rem;
+  }
+  .explanation {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: #f4f6fb;
+    border-left: 3px solid var(--accent);
+    padding: 10px 14px;
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    border-radius: 0 6px 6px 0;
+  }
+  .back-to-top {
+    display: inline-block;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 0.8rem;
+    color: var(--accent);
+    text-decoration: none;
+    margin-top: 4px;
+  }
+  footer {
+    text-align: center;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--ink-soft);
+    font-size: 0.82rem;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  @media print {
+    body { background: #fff; }
+    nav.toc { break-after: page; }
+    section h2 { position: static; break-before: page; }
+    .qblock { break-inside: avoid; box-shadow: none; }
+    .back-to-top { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>INT335 — CA Practice: Answer Key</h1>
+    <p>Design Thinking · Unit 1 &amp; Unit 2 · Scenario-based MCQs with explanations</p>
+  </header>
+
+  <nav class="toc" id="top">
+    <h2>Table of Contents</h2>
+    <ul>
+<li><a href="#unit1">Unit 1 — Foundations of Learning, Creativity and Design Thinking</a> <span class="toc-count">(31 questions)</span></li>
+<li><a href="#unit2">Unit 2 — Empathy, Observation and Problem Identification</a> <span class="toc-count">(35 questions)</span></li>
+    </ul>
+  </nav>
+
+<section id="unit1">
+<h2>Unit 1 — Foundations of Learning, Creativity and Design Thinking</h2>
+<div class="qblock">
+<div class="qnum">Q1.</div>
+<div class="qbody">
+<p class="qtext">A student spends two hours in deep focus solving a tricky circuit problem, gets nowhere, then goes for a walk and the answer suddenly appears. Which concept from Unit 1 best explains this?</p>
+<ul class="opts">
+<li><strong>A.</strong> The candle problem</li>
+<li class="correct-opt"><strong>B.</strong> Alternating focused and diffuse modes ✓</li>
+<li><strong>C.</strong> The VARK framework</li>
+<li><strong>D.</strong> Functional fixedness</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The notes describe the practical rule that effective problem-solving alternates focused and diffuse modes — struggle first (focused), then step away so the diffuse mode can reorganise the material, as in the Mendeleev example.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q2.</div>
+<div class="qbody">
+<p class="qtext">Mendeleev is said to have arranged the periodic table after dreaming about it. According to the Unit 1 notes, what is the key lesson from this story?</p>
+<ul class="opts">
+<li><strong>A.</strong> Dreams are a reliable source of scientific discovery</li>
+<li class="correct-opt"><strong>B.</strong> Diffuse mode does not work on an empty mind — struggle first, then step away ✓</li>
+<li><strong>C.</strong> Focused mode is always superior to diffuse mode</li>
+<li><strong>D.</strong> Creativity requires sleep deprivation</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The notes explicitly state the diffuse mode reorganises material you have already struggled with in focused mode; it doesn't work on an empty mind.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q3.</div>
+<div class="qbody">
+<p class="qtext">A trainer tells learners: 'You're a Visual learner, so I'll only ever teach you using diagrams from now on, and you'll learn best.' Based on the 'Note on Evidence' slide, what is wrong with this claim?</p>
+<ul class="opts">
+<li><strong>A.</strong> VARK does not include a Visual category</li>
+<li class="correct-opt"><strong>B.</strong> Controlled studies have not supported the claim that matching teaching style to preferred style improves results ✓</li>
+<li><strong>C.</strong> Visual learners actually perform worse than others</li>
+<li><strong>D.</strong> The VARK model has been officially withdrawn from use</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The notes say the stronger claim — that being taught in your preferred style improves results — has repeatedly failed to hold up in controlled studies, even though VARK remains a useful self-reflection prompt.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q4.</div>
+<div class="qbody">
+<p class="qtext">In Activity 1.2, a student scores statements 1 and 5 together. Which VARK style does this pairing represent?</p>
+<ul class="opts">
+<li><strong>A.</strong> Auditory</li>
+<li><strong>B.</strong> Reading/Writing</li>
+<li class="correct-opt"><strong>C.</strong> Visual ✓</li>
+<li><strong>D.</strong> Kinesthetic</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: C</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The scoring key pairs V = statements 1+5, A = 2+6, R = 3+7, K = 4+8.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q5.</div>
+<div class="qbody">
+<p class="qtext">Three study strategies are said to actually replicate in research, unlike the strict VARK-matching claim. Which set is it?</p>
+<ul class="opts">
+<li class="correct-opt"><strong>A.</strong> Retrieval practice, spacing, and interleaving ✓</li>
+<li><strong>B.</strong> Visual aids, note-taking, and group study</li>
+<li><strong>C.</strong> Cramming, rereading, and highlighting</li>
+<li><strong>D.</strong> Lecture attendance, memorisation, and repetition</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: A</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The notes list retrieval practice, spacing, and interleaving as the three study strategies that do replicate.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q6.</div>
+<div class="qbody">
+<p class="qtext">A team is asked to find non-obvious uses for a paper clip during the 'Mystery Bag' activity. Struggling to think beyond 'holding papers together' is an example of which cognitive barrier?</p>
+<ul class="opts">
+<li><strong>A.</strong> Conformity</li>
+<li><strong>B.</strong> Fear of failure</li>
+<li class="correct-opt"><strong>C.</strong> Functional fixedness ✓</li>
+<li><strong>D.</strong> The expertise trap</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: C</strong></p>
+<p class="explanation"><strong>Explanation:</strong> Functional fixedness is the tendency to see objects only for their traditional purpose, exactly as illustrated by the paper clip example.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q7.</div>
+<div class="qbody">
+<p class="qtext">In the plastic bucket worked example, students who list six or seven uses and then stall are advised to change their approach. What technique unlocks more ideas?</p>
+<ul class="opts">
+<li><strong>A.</strong> Ask a friend for ideas</li>
+<li class="correct-opt"><strong>B.</strong> List the object's properties first, then find a use for each property ✓</li>
+<li><strong>C.</strong> Look up bucket uses online</li>
+<li><strong>D.</strong> Only consider the bucket's original manufacturing purpose</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The technique is to stop thinking about the object and start listing its properties (hollow, watertight, rigid, etc.), then derive uses from each property — this produced 28 uses from 6 properties.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q8.</div>
+<div class="qbody">
+<p class="qtext">An engineer with 15 years of experience keeps proposing the same solution pattern for every new problem, even when it doesn't quite fit. Which cognitive block is this closest to?</p>
+<ul class="opts">
+<li><strong>A.</strong> Premature judgment</li>
+<li class="correct-opt"><strong>B.</strong> The expertise trap ✓</li>
+<li><strong>C.</strong> Conformity</li>
+<li><strong>D.</strong> Fear of failure</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The expertise trap is over-reliance on past solutions — the more you know, the more you reach for what worked before.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q9.</div>
+<div class="qbody">
+<p class="qtext">During a brainstorming session, a junior team member rejects her own idea internally before even saying it aloud, worried others will laugh. This illustrates which cognitive block?</p>
+<ul class="opts">
+<li><strong>A.</strong> The expertise trap</li>
+<li class="correct-opt"><strong>B.</strong> Fear of failure ✓</li>
+<li><strong>C.</strong> Premature judgment</li>
+<li><strong>D.</strong> Conformity</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> Fear of failure is the hesitation to propose ideas due to fear of criticism, which matches the scenario of self-censoring before speaking.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q10.</div>
+<div class="qbody">
+<p class="qtext">A student imagines a drone delivery system in detail but never builds or launches it. According to the 'Three Concepts, Often Confused' table, this is best classified as:</p>
+<ul class="opts">
+<li><strong>A.</strong> Invention</li>
+<li><strong>B.</strong> Innovation</li>
+<li class="correct-opt"><strong>C.</strong> Creativity ✓</li>
+<li><strong>D.</strong> Disruption</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: C</strong></p>
+<p class="explanation"><strong>Explanation:</strong> Creativity is the ability to generate original and useful ideas — the table's own example for creativity is 'imagining a drone delivery system.'</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q11.</div>
+<div class="qbody">
+<p class="qtext">Alexander Graham Bell created the first telephone — something that did not exist before. Which concept does this exemplify?</p>
+<ul class="opts">
+<li><strong>A.</strong> Innovation</li>
+<li class="correct-opt"><strong>B.</strong> Invention ✓</li>
+<li><strong>C.</strong> Incremental improvement</li>
+<li><strong>D.</strong> Disruption</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> Invention is creating something entirely new that did not exist before; the notes cite the first telephone by A. G. Bell as the example.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q12.</div>
+<div class="qbody">
+<p class="qtext">The iPhone is described as 'reshaping the smartphone market.' Which of the three concepts (creativity, invention, innovation) does this represent, and why?</p>
+<ul class="opts">
+<li><strong>A.</strong> Invention, because it was the first phone ever made</li>
+<li class="correct-opt"><strong>B.</strong> Innovation, because it successfully implemented creative ideas to create value at scale ✓</li>
+<li><strong>C.</strong> Creativity, because it was an original idea</li>
+<li><strong>D.</strong> None of the three — it is simply good marketing</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> Innovation is successfully implementing creative ideas to create value; the notes state creativity becomes innovation only when it delivers value, matching the iPhone example given.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q13.</div>
+<div class="qbody">
+<p class="qtext">USB transitioning to USB Type-C is used as an example of which type of change?</p>
+<ul class="opts">
+<li><strong>A.</strong> Disruptive innovation</li>
+<li class="correct-opt"><strong>B.</strong> Incremental invention ✓</li>
+<li><strong>C.</strong> Wicked problem resolution</li>
+<li><strong>D.</strong> Functional fixedness</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> USB → USB Type-C is listed under Incremental Invention — small but meaningful improvements to an existing product.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q14.</div>
+<div class="qbody">
+<p class="qtext">Netflix replacing DVD rental stores is given as an example of which concept?</p>
+<ul class="opts">
+<li><strong>A.</strong> Incremental invention</li>
+<li class="correct-opt"><strong>B.</strong> Disruptive innovation ✓</li>
+<li><strong>C.</strong> Functional fixedness</li>
+<li><strong>D.</strong> Conformity</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The Disruptor/What it replaced table lists Netflix replacing DVD rental stores under Disruptive Innovation — a new model that transforms markets.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q15.</div>
+<div class="qbody">
+<p class="qtext">A city is trying to solve homelessness — an issue with no single right answer, many interdependent causes, and solutions that can only be judged 'better or worse.' What kind of problem is this?</p>
+<ul class="opts">
+<li><strong>A.</strong> Well-defined problem</li>
+<li><strong>B.</strong> Ill-defined problem</li>
+<li class="correct-opt"><strong>C.</strong> Wicked problem ✓</li>
+<li><strong>D.</strong> Technical problem</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: C</strong></p>
+<p class="explanation"><strong>Explanation:</strong> Wicked problems are complex and interconnected, judged as better or worse rather than right or wrong — the notes give climate, poverty, and healthcare as examples, matching homelessness.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q16.</div>
+<div class="qbody">
+<p class="qtext">Solving a quadratic equation has one correct answer and clear constraints. What category of problem is this, per the Unit 1 framework?</p>
+<ul class="opts">
+<li><strong>A.</strong> Wicked problem</li>
+<li><strong>B.</strong> Ill-defined problem</li>
+<li class="correct-opt"><strong>C.</strong> Well-defined problem ✓</li>
+<li><strong>D.</strong> Diffuse problem</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: C</strong></p>
+<p class="explanation"><strong>Explanation:</strong> Well-defined problems have clear goals, constraints, and a solution, with equations given as an explicit example.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q17.</div>
+<div class="qbody">
+<p class="qtext">Designing a new marketing strategy has unclear goals and many possible solution paths, but is not as deeply interconnected as a societal crisis. This is classified as:</p>
+<ul class="opts">
+<li><strong>A.</strong> A well-defined problem</li>
+<li><strong>B.</strong> A wicked problem</li>
+<li class="correct-opt"><strong>C.</strong> An ill-defined problem ✓</li>
+<li><strong>D.</strong> A focused-mode problem</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: C</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The notes list 'marketing strategy' explicitly under Ill-Defined problems: unclear goals or paths with many possible solutions.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q18.</div>
+<div class="qbody">
+<p class="qtext">Herbert Simon's contribution in the 1969–70s, as shown on the Design Thinking history timeline, was to frame design as:</p>
+<ul class="opts">
+<li><strong>A.</strong> A wicked problem</li>
+<li class="correct-opt"><strong>B.</strong> A way of thinking ✓</li>
+<li><strong>C.</strong> A five-stage process</li>
+<li><strong>D.</strong> A human-centred design lens</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The timeline credits Herbert Simon (1969–70s) with framing 'design as a way of thinking.'</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q19.</div>
+<div class="qbody">
+<p class="qtext">According to Lawson's Experiment cited in the history timeline, what is the key behavioural difference between scientists and designers when solving problems?</p>
+<ul class="opts">
+<li><strong>A.</strong> Scientists test rapidly while designers analyse first</li>
+<li class="correct-opt"><strong>B.</strong> Scientists are problem-focused and analyse thoroughly before proposing solutions; designers are solution-focused and test many solutions rapidly through iteration ✓</li>
+<li><strong>C.</strong> There is no meaningful difference between the two groups</li>
+<li><strong>D.</strong> Designers never analyse a problem before solving it</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The notes state scientists are problem-focused (analyse thoroughly before proposing solutions) while designers are solution-focused (create and test many solutions rapidly, learning through iteration).</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q20.</div>
+<div class="qbody">
+<p class="qtext">A team follows Empathize → Define → Ideate → Prototype → Test, then loops back to Empathize after testing reveals a wrong assumption. Which framework are they using, and what does the dashed feedback arrow represent?</p>
+<ul class="opts">
+<li><strong>A.</strong> The IDEO framework; it shows feasibility feeding into viability</li>
+<li class="correct-opt"><strong>B.</strong> The Stanford d.school framework; testing feeds back into empathy, since the process is iterative not linear ✓</li>
+<li><strong>C.</strong> The AEIOU framework; it shows activities feeding into environment</li>
+<li><strong>D.</strong> The Waterfall model; it shows testing feeding into shipping</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> This is the Stanford d.school's five-stage framework; the notes explicitly say 'the dashed arrow is the whole point: testing feeds back into empathy. The process is iterative, not linear.'</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q21.</div>
+<div class="qbody">
+<p class="qtext">A concept is technically feasible and economically viable, but nobody actually wants it. Using the IDEO Human-Centred Design lens, which condition is missing, and what is the likely outcome?</p>
+<ul class="opts">
+<li><strong>A.</strong> Viability is missing, so the product will be economically unsustainable</li>
+<li><strong>B.</strong> Feasibility is missing, so the product cannot be built</li>
+<li class="correct-opt"><strong>C.</strong> Desirability is missing, so the concept will fail in practice despite meeting the other two conditions ✓</li>
+<li><strong>D.</strong> Nothing is missing — meeting two of three lenses is sufficient for genuine innovation</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: C</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The IDEO framework requires all three lenses (Desirability, Feasibility, Viability) to overlap; meeting only one or two produces a concept that fails in practice — here, desirability (do people want this?) is missing.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q22.</div>
+<div class="qbody">
+<p class="qtext">A software company finishes requirements gathering, then design, then development, then testing — strictly in that order, with user feedback only collected at the very end. Which model does this describe, and what is its key weakness according to the notes?</p>
+<ul class="opts">
+<li><strong>A.</strong> Human-Centred Design; its weakness is excessive iteration</li>
+<li class="correct-opt"><strong>B.</strong> Waterfall; user feedback comes at the end, so changes are costly ✓</li>
+<li><strong>C.</strong> The d.school framework; its weakness is that it lacks a testing phase</li>
+<li><strong>D.</strong> Agile; its weakness is unclear requirements</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> This is the Waterfall model — linear, step-by-step, with each phase finished before the next; the notes state feedback comes at the end, so changes are costly, contrasted with HCD's iterative loop.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q23.</div>
+<div class="qbody">
+<p class="qtext">Airbnb's early data showed low bookings and flat revenue, but the numbers alone didn't explain why. What did the founders do to uncover the real problem, and what did they find?</p>
+<ul class="opts">
+<li><strong>A.</strong> They ran a large-scale online survey and found pricing was too high</li>
+<li class="correct-opt"><strong>B.</strong> They flew to visit hosts personally, discovering listings had poor-quality amateur photographs that discouraged bookings ✓</li>
+<li><strong>C.</strong> They hired a marketing agency to redesign the logo</li>
+<li><strong>D.</strong> They lowered prices across all listings without further investigation</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The case study describes the founders personally visiting hosts in New York and discovering poor-quality photos were discouraging bookings — an empathy-driven insight the data alone couldn't reveal.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q24.</div>
+<div class="qbody">
+<p class="qtext">What was the actual intervention Airbnb's founders used to fix the booking problem, and why is it described as significant despite being simple?</p>
+<ul class="opts">
+<li><strong>A.</strong> They built an AI photo-enhancement tool; it was significant because it was highly scalable</li>
+<li class="correct-opt"><strong>B.</strong> They rented a camera and photographed listings themselves; it is called out as an intervention that does not scale, which is exactly why nobody had tried it ✓</li>
+<li><strong>C.</strong> They offered cash refunds to hosts; it was significant because it solved the problem instantly</li>
+<li><strong>D.</strong> They removed low-quality listings from the platform; it was significant because it improved average ratings</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The notes state they rented a camera and photographed the listings themselves, calling it 'a simple, empathy-driven intervention — and one that does not scale, which is exactly why nobody had tried it.'</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q25.</div>
+<div class="qbody">
+<p class="qtext">Google Glass (2013) had cutting-edge technology but failed commercially. According to the case study, which of the following was NOT listed as a reason for its failure?</p>
+<ul class="opts">
+<li><strong>A.</strong> Social concerns about being recorded</li>
+<li><strong>B.</strong> An awkward design that drew unwanted attention</li>
+<li class="correct-opt"><strong>C.</strong> A hardware defect that caused frequent crashes ✓</li>
+<li><strong>D.</strong> No clear use case and a high price of $1,500</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: C</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The listed reasons were social concerns, awkward design, no clear use case, and price — a hardware defect/crashing issue is not mentioned anywhere in the case study.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q26.</div>
+<div class="qbody">
+<p class="qtext">Google later relaunched Glass as the 'Enterprise Edition' for warehouse and factory technicians, and it succeeded in that context. What broader lesson does the case study draw from this?</p>
+<ul class="opts">
+<li><strong>A.</strong> Wearable technology never succeeds in consumer markets</li>
+<li class="correct-opt"><strong>B.</strong> A product is never simply good or bad in the abstract — it is good or bad for someone, depending on user desirability ✓</li>
+<li><strong>C.</strong> Price is the only factor that determines product success</li>
+<li><strong>D.</strong> Enterprise customers always have lower expectations than consumers</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The notes conclude: 'A product is never simply good or bad — it is good or bad for someone,' using the Enterprise Edition's success with a different user group as evidence.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q27.</div>
+<div class="qbody">
+<p class="qtext">Dr. V founded Aravind Eye Hospital after realising cataract surgery already existed and worked medically. What did he identify as the actual problem?</p>
+<ul class="opts">
+<li><strong>A.</strong> A shortage of trained surgeons worldwide</li>
+<li class="correct-opt"><strong>B.</strong> Access — surgery cost more than most rural patients earned in months, hospitals were far, and surgeons were scarce ✓</li>
+<li><strong>C.</strong> Poor quality of the surgical technique itself</li>
+<li><strong>D.</strong> Lack of government funding for healthcare</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The case study states the problem was not medical — cataract surgery worked — but access: cost, distance, and scarcity of surgeons for rural patients.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q28.</div>
+<div class="qbody">
+<p class="qtext">Dr. V reframed his challenge by asking how McDonald's serves millions of people the same product, consistently, cheaply, anywhere. What design technique does the case study say this exemplifies, to be practised further in Unit 3?</p>
+<ul class="opts">
+<li><strong>A.</strong> Functional fixedness reduction</li>
+<li class="correct-opt"><strong>B.</strong> Analogous inspiration — drawing on a completely unrelated industry ✓</li>
+<li><strong>C.</strong> The Five Whys technique</li>
+<li><strong>D.</strong> The AEIOU observation framework</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The notes explicitly call this 'an example of analogous inspiration, a technique you will practise in Unit 3' — studying the fast-food assembly line as a design reference.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q29.</div>
+<div class="qbody">
+<p class="qtext">At Aravind Eye Care, paying patients choose a higher comfort tier, but free and paying patients receive the same surgeons and the same quality of surgery. Which principle from the 'Lessons Learned' does this best illustrate?</p>
+<ul class="opts">
+<li><strong>A.</strong> Affordability can be designed — it is an outcome of process, not only of subsidy</li>
+<li class="correct-opt"><strong>B.</strong> Dignity is a design requirement — only the comfort tier differs, not the quality of care ✓</li>
+<li><strong>C.</strong> The best analogy often comes from a completely unrelated industry</li>
+<li><strong>D.</strong> Cross-subsidy pricing is unnecessary for financial sustainability</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The notes state 'Dignity is a design requirement. Free patients receive the same surgery and the same surgeons as paying ones. Only the comfort tier differs' — directly matching the scenario.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q30.</div>
+<div class="qbody">
+<p class="qtext">In 'Spot the Mistake 1.1', a team decides to build an attendance app first, and only afterward surveys students to find out which features they want in it. What is the giveaway that this is NOT genuine Design Thinking?</p>
+<ul class="opts">
+<li><strong>A.</strong> Surveys are never a valid research method in Design Thinking</li>
+<li class="correct-opt"><strong>B.</strong> The solution (an app) was decided before any user research was done, reversing the empathize-first order ✓</li>
+<li><strong>C.</strong> Attendance apps are inherently poor product ideas</li>
+<li><strong>D.</strong> The team should have interviewed faculty instead of students</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> This matches the 'ordinary engineering wearing a Design Thinking label' pattern — the solution was chosen before empathizing with users, when Design Thinking should begin with understanding needs before proposing solutions.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q31.</div>
+<div class="qbody">
+<p class="qtext">In the same 'Spot the Mistake 1.1' set, a team's first three prototypes were rejected by users, so they changed the problem statement. Why does this represent genuine Design Thinking?</p>
+<ul class="opts">
+<li><strong>A.</strong> Because they kept the same prototype and just changed the marketing</li>
+<li class="correct-opt"><strong>B.</strong> Because user feedback (testing) fed back into redefining the problem, reflecting the iterative empathize-test loop ✓</li>
+<li><strong>C.</strong> Because three prototypes is the correct number required by the process</li>
+<li><strong>D.</strong> Because changing the problem statement guarantees success</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> This reflects the iterative nature of Design Thinking — test results looping back to redefine the problem — consistent with the d.school framework's iterative arrow described earlier in the unit.</p>
+</div>
+</div>
+<p style="text-align:center;"><a href="#top" class="back-to-top">↑ Back to top</a></p></section>
+<section id="unit2">
+<h2>Unit 2 — Empathy, Observation and Problem Identification</h2>
+<div class="qblock">
+<div class="qnum">Q1.</div>
+<div class="qbody">
+<p class="qtext">A teacher assumes students are 'just not interested' in online learning, rather than investigating why they struggle. What does the Unit 2 material say is missing from this teacher's approach?</p>
+<ul class="opts">
+<li><strong>A.</strong> Sympathy</li>
+<li class="correct-opt"><strong>B.</strong> Empathy — seeing the world from the user's (student's) point of view instead of assuming ✓</li>
+<li><strong>C.</strong> Computational empathy</li>
+<li><strong>D.</strong> Quantitative research</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The notes use exactly this example: 'A teacher understanding why students struggle with online learning — rather than assuming they are simply not interested' as the model of empathy in practice.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q2.</div>
+<div class="qbody">
+<p class="qtext">A colleague says, 'Poor first-years, getting lost on campus must be awful,' but does nothing further. According to the Sympathy/Empathy/Compassion table, this statement reflects:</p>
+<ul class="opts">
+<li><strong>A.</strong> Compassion, because it shows care</li>
+<li><strong>B.</strong> Empathy, because it names a specific problem</li>
+<li class="correct-opt"><strong>C.</strong> Sympathy, because it feels for someone from a distance without action ✓</li>
+<li><strong>D.</strong> Computational empathy, because it involves a system</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: C</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The table defines Sympathy as 'feeling for someone, from a distance,' with the example line 'Poor first-years, getting lost must be awful' given verbatim as the sympathy example.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q3.</div>
+<div class="qbody">
+<p class="qtext">A team follows three first-years for a morning and discovers the block numbering resets in each wing, then decides to renumber the wing signage that same week. According to the table, this progression demonstrates:</p>
+<ul class="opts">
+<li><strong>A.</strong> Sympathy only</li>
+<li><strong>B.</strong> Empathy only, without further action</li>
+<li class="correct-opt"><strong>C.</strong> Compassion — empathy plus the decision to act ✓</li>
+<li><strong>D.</strong> Computational empathy</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: C</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The table defines Compassion as 'empathy plus the decision to act,' with the exact example: observing the wing numbering issue (empathy) followed by 'renumbering the wing signage this week' (the action, i.e., compassion).</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q4.</div>
+<div class="qbody">
+<p class="qtext">A UX researcher who is also a student says, 'I'm a student too, so I know what students need,' and designs based only on their own experience. What mistake does Unit 2 call this?</p>
+<ul class="opts">
+<li><strong>A.</strong> The say-do gap</li>
+<li class="correct-opt"><strong>B.</strong> Assuming you are the user — letting your own experience become the whole sample ✓</li>
+<li><strong>C.</strong> The expertise trap</li>
+<li><strong>D.</strong> Functional fixedness</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> This is 'The Most Common Mistake' — assuming you know what users want because you are a user yourself, turning your own experience into the whole sample instead of one hypothesis to check.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q5.</div>
+<div class="qbody">
+<p class="qtext">Netflix recommending content 'to suit mood' and Spotify 'matching listening habits' are both given as examples of which concept?</p>
+<ul class="opts">
+<li><strong>A.</strong> The say-do gap</li>
+<li class="correct-opt"><strong>B.</strong> Computational empathy — applying empathy to software using AI to understand and respond to emotions/behaviour ✓</li>
+<li><strong>C.</strong> Field observation</li>
+<li><strong>D.</strong> The AEIOU framework</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> Computational empathy is defined as applying empathy to software development using AI to understand and respond to human emotions and behaviour; Netflix and Spotify are given as explicit examples.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q6.</div>
+<div class="qbody">
+<p class="qtext">During India's COVID-19 vaccination drive, planners had to serve over a billion people with widely varying smartphone access, connectivity, languages, and digital literacy. What was the key empathy-driven insight behind CoWIN's design, and what did the team build in response?</p>
+<ul class="opts">
+<li class="correct-opt"><strong>A.</strong> A single rigid mobile-only flow would exclude millions, so they built multiple assisted pathways (self, helpdesk, on-site) with a common backend and open APIs ✓</li>
+<li><strong>B.</strong> Everyone has a smartphone, so a single mobile app was sufficient</li>
+<li><strong>C.</strong> Only urban users needed to be considered, since they are the majority of vaccine recipients</li>
+<li><strong>D.</strong> The problem was purely a hardware supply issue, unrelated to interface design</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: A</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The case study states the key insight was that one rigid flow would exclude millions, so the team built multiple assisted pathways, a common backend with many front-ends, QR-verifiable certificates, and open slot APIs.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q7.</div>
+<div class="qbody">
+<p class="qtext">A team wants to understand WHY students skip morning classes — exploring reasons and generating insights from a small group of 10 students. Which research approach fits best, and why?</p>
+<ul class="opts">
+<li><strong>A.</strong> Quantitative, because it involves counting students</li>
+<li class="correct-opt"><strong>B.</strong> Qualitative, because it focuses on understanding why and how, using a small purposive sample suited for exploring problems ✓</li>
+<li><strong>C.</strong> Neither — this requires an A/B test</li>
+<li><strong>D.</strong> Quantitative, because 10 is a large enough sample size</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> Qualitative research focuses on understanding why and how, typically with 5–20 participants, and is best for exploring problems and generating insights — matching this scenario exactly.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q8.</div>
+<div class="qbody">
+<p class="qtext">A product team wants to measure how many of 500 users abandon their shopping cart, using analytics data. Which research type is this, and what is it best used for?</p>
+<ul class="opts">
+<li><strong>A.</strong> Qualitative research, best for generating insights</li>
+<li class="correct-opt"><strong>B.</strong> Quantitative research, best for validating hypotheses and measuring scale ✓</li>
+<li><strong>C.</strong> Field observation, best for ethical research</li>
+<li><strong>D.</strong> Computational empathy, best for AI systems</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> Quantitative research measures what and how many, using large samples (100+) and methods like analytics; it is best for validating hypotheses and measuring at scale.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q9.</div>
+<div class="qbody">
+<p class="qtext">A team first conducts interviews to discover why users abandon an app, then runs a large-scale survey to confirm how widespread that reason is. What does Unit 2 call this sequencing?</p>
+<ul class="opts">
+<li><strong>A.</strong> An invalid research design, since you cannot combine both methods</li>
+<li class="correct-opt"><strong>B.</strong> The correct sequence — qualitative research to discover insights, then quantitative research to validate them at scale, since they are partners, not rivals ✓</li>
+<li><strong>C.</strong> Reversed — quantitative should always come first</li>
+<li><strong>D.</strong> Irrelevant, since only one method should ever be used per project</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The notes state explicitly: 'Use qualitative research to discover insights, then use quantitative research to validate them at scale. They are partners, not rivals.'</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q10.</div>
+<div class="qbody">
+<p class="qtext">A designer sits quietly in a library for an hour, taking notes on what students actually do, without asking them any questions or interrupting them. This method is called:</p>
+<ul class="opts">
+<li><strong>A.</strong> A structured interview</li>
+<li class="correct-opt"><strong>B.</strong> Field observation — observing users in their natural environment rather than asking what they do ✓</li>
+<li><strong>C.</strong> A quantitative survey</li>
+<li><strong>D.</strong> Computational empathy</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> Field observation is defined as observing users in their natural environments; 'be a fly on the wall — do not interrupt or influence behaviour, take notes discreetly' directly matches this scenario.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q11.</div>
+<div class="qbody">
+<p class="qtext">At a photocopy shop, an observer notes: 'Four of eleven people left without printing after asking the price.' Which AEIOU category does this specific observation most directly capture?</p>
+<ul class="opts">
+<li><strong>A.</strong> Environment</li>
+<li><strong>B.</strong> Objects</li>
+<li class="correct-opt"><strong>C.</strong> Activities ✓</li>
+<li><strong>D.</strong> Users</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: C</strong></p>
+<p class="explanation"><strong>Explanation:</strong> This is recorded under the 'A' (Activities) row of the worked example, describing what people did — queuing, asking price, and leaving.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q12.</div>
+<div class="qbody">
+<p class="qtext">In the same photocopy shop worked example, the observer notes: 'Single counter, one printer, no seating. Fan is loud... Rate card is handwritten and taped at knee height.' Which AEIOU letter does this belong to?</p>
+<ul class="opts">
+<li><strong>A.</strong> Interactions</li>
+<li class="correct-opt"><strong>B.</strong> Environment ✓</li>
+<li><strong>C.</strong> Objects</li>
+<li><strong>D.</strong> Activities</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> This is recorded under 'E' (Environment) — the physical space, its lighting/noise/layout factors.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q13.</div>
+<div class="qbody">
+<p class="qtext">The observer notes: 'The operator asks colour or black? every single time — the rate card does not answer it.' Which AEIOU category captures this?</p>
+<ul class="opts">
+<li><strong>A.</strong> Objects</li>
+<li><strong>B.</strong> Users</li>
+<li class="correct-opt"><strong>C.</strong> Interactions — how users engage with people, products, or systems ✓</li>
+<li><strong>D.</strong> Activities</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: C</strong></p>
+<p class="explanation"><strong>Explanation:</strong> This is recorded under 'I' (Interactions), which covers engagement between users and people/products/systems — here, the repeated verbal exchange with the operator.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q14.</div>
+<div class="qbody">
+<p class="qtext">The observer wrote 'The shop is badly managed' and 'Students are impatient' in their notes. What is the specific problem with these two entries, according to the worked example?</p>
+<ul class="opts">
+<li><strong>A.</strong> They are too long to be useful</li>
+<li class="correct-opt"><strong>B.</strong> They are judgements, not observations — the observer should record factual behaviour, not interpretations ✓</li>
+<li><strong>C.</strong> They should have been written in the Objects category instead</li>
+<li><strong>D.</strong> They contain personally identifiable information</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The notes explicitly flag these two lines as 'What the Observer Did Not Write... Those are judgements, not observations,' reinforcing that AEIOU notes should record fact, not opinion.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q15.</div>
+<div class="qbody">
+<p class="qtext">Before interviewing a stranger on campus for a class project, a student is expected to read a script stating who they are, what the interview is for, that it's voluntary, and that names won't be recorded. This is an example of:</p>
+<ul class="opts">
+<li><strong>A.</strong> The Five Whys technique</li>
+<li class="correct-opt"><strong>B.</strong> The verbal consent script, required as part of research ethics before fieldwork ✓</li>
+<li><strong>C.</strong> An empathy map</li>
+<li><strong>D.</strong> A pain point audit</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> This matches the consent script provided verbatim in the notes, which must be read aloud before every interview as part of research ethics.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q16.</div>
+<div class="qbody">
+<p class="qtext">According to the Research Ethics and Consent guidelines, which of the following actions is explicitly discouraged, even during legitimate fieldwork?</p>
+<ul class="opts">
+<li><strong>A.</strong> Meeting in open, public, daylight areas</li>
+<li><strong>B.</strong> Recording participants by pseudonym or initials</li>
+<li class="correct-opt"><strong>C.</strong> Photographing individual people during the interview — sketching the scene is preferred instead ✓</li>
+<li><strong>D.</strong> Working in pairs for safety</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: C</strong></p>
+<p class="explanation"><strong>Explanation:</strong> Rule 4 states: 'Do not photograph people. Sketch the scene instead' — the other three options are all explicitly recommended practices, not discouraged ones.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q17.</div>
+<div class="qbody">
+<p class="qtext">A researcher watches a user open a food delivery app, add items to cart, and hesitate before placing the order — recording only these observable actions without yet interpreting them. Which stage of the What-How-Why framework is this?</p>
+<ul class="opts">
+<li><strong>A.</strong> WHY</li>
+<li><strong>B.</strong> HOW</li>
+<li class="correct-opt"><strong>C.</strong> WHAT — observing what the user does, not what you think they do ✓</li>
+<li><strong>D.</strong> This is not part of the What-How-Why framework</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: C</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The WHAT stage is defined as observing what users do (not what you think they do) and recording actions/events objectively — matching the scenario of noting actions without interpretation.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q18.</div>
+<div class="qbody">
+<p class="qtext">A researcher notices the same food-delivery user scrolls back and forth to read details and re-reads the delivery fees multiple times. Which stage of What-How-Why captures this kind of observation, and what does it reveal?</p>
+<ul class="opts">
+<li><strong>A.</strong> WHAT — it reveals what tools are used</li>
+<li class="correct-opt"><strong>B.</strong> HOW — it reveals how the task is performed and where challenges occur, through effort and behaviour ✓</li>
+<li><strong>C.</strong> WHY — it reveals the user's underlying motivation directly</li>
+<li><strong>D.</strong> None of the stages; this belongs in the AEIOU framework only</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The HOW stage explores how users complete tasks by observing actions, effort, emotions, and challenges — the example given is exactly scrolling back and forth and re-reading fees.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q19.</div>
+<div class="qbody">
+<p class="qtext">After observing the WHAT and HOW of a user's food delivery experience, the researcher infers the user 'wants the best value for money' and 'feels unsure about the final choice.' The notes caution that this stage involves:</p>
+<ul class="opts">
+<li><strong>A.</strong> Pure fact recording, with no interpretation involved</li>
+<li class="correct-opt"><strong>B.</strong> Inference — carefully labelled as inference — uncovering motivations, emotions, and needs behind the behaviour ✓</li>
+<li><strong>C.</strong> A leading interview question</li>
+<li><strong>D.</strong> A computational empathy system</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The WHY stage is described as the point 'where inference — carefully labelled as inference — begins,' uncovering motivations, emotions and needs behind observed behaviour.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q20.</div>
+<div class="qbody">
+<p class="qtext">An interviewer asks a user: 'Would you use a feature that reminds you about deadlines?' What is the primary flaw with this question, based on the 'characteristics of good questions' guidance?</p>
+<ul class="opts">
+<li><strong>A.</strong> It's too short to be useful</li>
+<li class="correct-opt"><strong>B.</strong> It is hypothetical rather than about the user's actual current experience ✓</li>
+<li><strong>C.</strong> It uses complex vocabulary the user might not understand</li>
+<li><strong>D.</strong> It is a leading question about parking</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> Good questions are exploratory and user-focused, about actual experiences rather than hypotheticals; 'Would you use a feature that...' is a hypothetical question, one of the fault types named in Spot the Mistake 2.1.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q21.</div>
+<div class="qbody">
+<p class="qtext">An interviewer asks: 'Most students say the Wi-Fi is bad. Do you agree?' What specific flaw does this question demonstrate?</p>
+<ul class="opts">
+<li class="correct-opt"><strong>A.</strong> It is a leading question, since it primes the respondent with others' opinions before asking theirs ✓</li>
+<li><strong>B.</strong> It is a closed yes/no question only</li>
+<li><strong>C.</strong> It focuses on the user's life rather than a hypothetical</li>
+<li><strong>D.</strong> It correctly follows the open-ended question format</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: A</strong></p>
+<p class="explanation"><strong>Explanation:</strong> This is a leading question — telling the respondent what 'most students' think before asking their opinion biases the answer toward agreement.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q22.</div>
+<div class="qbody">
+<p class="qtext">An interviewer, frustrated with a student's complaint about long queues, responds: 'Why don't you just go earlier to avoid the queue?' Beyond being poorly phrased, what deeper problem does this question create, per the notes?</p>
+<ul class="opts">
+<li><strong>A.</strong> It is too polite and won't get an honest answer</li>
+<li class="correct-opt"><strong>B.</strong> It shifts into offering the interviewer's own solution/judgement rather than exploring the user's life and experience, which can shut down honest sharing ✓</li>
+<li><strong>C.</strong> It is a leading question about food quality</li>
+<li><strong>D.</strong> It has no deeper problem beyond phrasing</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> Question 6 is flagged as having 'a second problem beyond its phrasing' — it steers into the interviewer's own suggested solution/judgement rather than staying focused on the user's actual experience, which damages the interview by shutting down honest disclosure.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q23.</div>
+<div class="qbody">
+<p class="qtext">During an interview, a student pauses for four seconds before answering a question about their study habits. The interviewer resists the urge to fill the silence. Which interviewing technique is being applied, and why is it valuable?</p>
+<ul class="opts">
+<li><strong>A.</strong> Follow emotions — because pauses indicate frustration</li>
+<li class="correct-opt"><strong>B.</strong> Embrace silence — because people fill silence with the thing they were not going to say ✓</li>
+<li><strong>C.</strong> Grand tour — because it covers a full day's routine</li>
+<li><strong>D.</strong> Seek contradictions — because pauses reveal inconsistency</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> Embrace silence is described as waiting three to five seconds, since people fill silence with the thing they were not going to say — described as the hardest and most productive technique.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q24.</div>
+<div class="qbody">
+<p class="qtext">An interviewer notices the participant said earlier that the app is 'easy to use,' but just described struggling to find a basic feature. The interviewer gently says, 'Earlier you said X, and just now Y...' Which technique is this?</p>
+<ul class="opts">
+<li><strong>A.</strong> Tell me a story</li>
+<li><strong>B.</strong> Show me</li>
+<li class="correct-opt"><strong>C.</strong> Seek contradictions — done curiously, never accusingly ✓</li>
+<li><strong>D.</strong> The Five Whys</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: C</strong></p>
+<p class="explanation"><strong>Explanation:</strong> This matches 'Seek contradictions,' described as pointing out an inconsistency curiously, never accusingly, using the same phrasing pattern given in the notes.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q25.</div>
+<div class="qbody">
+<p class="qtext">In the Five Whys worked example, the student's original complaint was 'the library is too crowded,' and after five rounds of 'why,' the team discovered the real issue was that evaluations test memorisation over understanding, making students feel they are wasting study time. What does the notes highlight about the Why-1 answer compared to the Why-5 answer?</p>
+<ul class="opts">
+<li><strong>A.</strong> Why-1 and Why-5 are always identical in every Five Whys exercise</li>
+<li class="correct-opt"><strong>B.</strong> The first Why is almost never the real one; the process moved from 'build a bigger library' to 'students need to feel their study time is well spent' ✓</li>
+<li><strong>C.</strong> The Five Whys technique should stop after the first Why for efficiency</li>
+<li><strong>D.</strong> Why-5 revealed an unrelated new problem, discarding the original complaint</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The notes conclude: 'The first Why is almost never the real one,' contrasting the starting point (build a bigger library) with the ending point (students need to feel their study time is well spent).</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q26.</div>
+<div class="qbody">
+<p class="qtext">A user says in an interview 'I want faster checkout,' but observation later reveals they actually crave a feeling of being in control of the process. According to Unit 2, how should these two pieces of information be classified?</p>
+<ul class="opts">
+<li><strong>A.</strong> Both are explicit needs, since the user described both aloud</li>
+<li class="correct-opt"><strong>B.</strong> 'Faster checkout' is an explicit need (stated clearly); the feeling of control is an implicit need (unspoken, revealed through observation/analysis) ✓</li>
+<li><strong>C.</strong> Both are implicit needs, since neither was directly observed</li>
+<li><strong>D.</strong> This distinction does not apply to checkout processes</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> Explicit needs are what users say they want, stated clearly in interviews ('I want faster checkout' is the notes' own example); implicit needs are unspoken and revealed through observation/analysis, such as needing to feel in control.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q27.</div>
+<div class="qbody">
+<p class="qtext">In a taste test, shoppers overwhelmingly said they preferred a lighter roast of coffee, but when offered a free cup, most reached for the dark roast. What is this phenomenon called, and what rule follows from it?</p>
+<ul class="opts">
+<li><strong>A.</strong> The expertise trap; ignore what people do and trust what they say</li>
+<li class="correct-opt"><strong>B.</strong> The say-do gap; ask what people do, watch what people choose — stated preference reflects self-image, observed behaviour reflects need ✓</li>
+<li><strong>C.</strong> Computational empathy; trust AI recommendations over stated preferences</li>
+<li><strong>D.</strong> Functional fixedness; people are fixed on traditional roast preferences</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> This is the exact coffee example given for the say-do gap; the rule is 'ask what people do; watch what people choose. Stated preference is evidence about self-image; observed behaviour is evidence about need.'</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q28.</div>
+<div class="qbody">
+<p class="qtext">A student records a pain point as 'the printing process is inefficient and frustrating' but has no quote or count to back it up. What does Unit 2 say should happen with such an entry?</p>
+<ul class="opts">
+<li><strong>A.</strong> It should be included as-is since impressions are sufficient evidence</li>
+<li class="correct-opt"><strong>B.</strong> Every pain point needs evidence — a quote or a count — so the student should identify the weakest-evidence pain point and go find supporting evidence ✓</li>
+<li><strong>C.</strong> It should be deleted immediately with no further action</li>
+<li><strong>D.</strong> Pain points do not require evidence, only personas do</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The notes state 'Every pain point you record needs evidence — a quote or a count' and prompt reflection on which pain point has the weakest evidence and what to go find out.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q29.</div>
+<div class="qbody">
+<p class="qtext">Namma Yatri began by empathising with auto-rickshaw drivers rather than riders, discovering that commission cuts, unpredictable algorithm changes, and lack of appeal routes were core issues. What did the empathy work conclude was the deepest pain point?</p>
+<ul class="opts">
+<li><strong>A.</strong> Price sensitivity among riders</li>
+<li class="correct-opt"><strong>B.</strong> Powerlessness, not price ✓</li>
+<li><strong>C.</strong> Vehicle maintenance costs</li>
+<li><strong>D.</strong> Traffic congestion in Bengaluru</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The case study states explicitly: 'The deepest pain point was powerlessness, not price.'</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q30.</div>
+<div class="qbody">
+<p class="qtext">What broader, transferable lesson does the Namma Yatri case study draw for design practice in general?</p>
+<ul class="opts">
+<li><strong>A.</strong> Ride-hailing apps should always prioritise the rider's experience over the driver's</li>
+<li class="correct-opt"><strong>B.</strong> Empathising with the person providing a service — not only the person consuming it — can produce radically different solutions ✓</li>
+<li><strong>C.</strong> Zero-commission models are financially unsustainable in the long run</li>
+<li><strong>D.</strong> Open protocols are always inferior to proprietary platforms</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The notes conclude: 'Empathising with the person providing the service — not only the person consuming it — produces radically different solutions,' citing the zero-commission, subscription-based outcome.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q31.</div>
+<div class="qbody">
+<p class="qtext">A team writes a persona line: 'Rahul loves cricket and drinks three coffees a day,' even though no interview participant said this. What rule does this violate, and how should the team fix it?</p>
+<ul class="opts">
+<li><strong>A.</strong> No rule is violated; personas are meant to be creative fiction</li>
+<li class="correct-opt"><strong>B.</strong> It violates the rule that a persona is a research summary, not an invented character — every line should be traceable to something a real person said or did, so this line should be deleted ✓</li>
+<li><strong>C.</strong> It violates the AEIOU framework specifically</li>
+<li><strong>D.</strong> It violates the say-do gap rule</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The notes state 'A persona is a research summary, not a character you invented... If you cannot point to the interview it came from, delete it' — and give this exact invented detail as the 'Invented' (bad) example.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q32.</div>
+<div class="qbody">
+<p class="qtext">A team creates a broad category called 'working professionals' to segment their market, without giving this group a name, age, or individual quote. Is this a persona or a target archetype, and why?</p>
+<ul class="opts">
+<li><strong>A.</strong> A persona, because it describes a group of users</li>
+<li class="correct-opt"><strong>B.</strong> A target archetype, because it is a broad group with shared behaviours/characteristics rather than one individual profile with a name and quote ✓</li>
+<li><strong>C.</strong> Neither — this is an empathy map</li>
+<li><strong>D.</strong> A persona, because personas can describe multiple people at once</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> Target archetypes are broad groups of users with similar behaviours/characteristics/needs (e.g., 'working professionals'), distinct from a persona, which is one fictional individual with a name, age, goal, challenge, and quote.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q33.</div>
+<div class="qbody">
+<p class="qtext">In an empathy map, a user says 'the app is easy to use' (SAYS) but is observed rewatching the same lecture three times and searching elsewhere for materials (DOES). What does Unit 2 say about this kind of gap?</p>
+<ul class="opts">
+<li><strong>A.</strong> It should be ignored since SAYS is always more reliable than DOES</li>
+<li class="correct-opt"><strong>B.</strong> It is usually the best opportunity — where SAYS and DOES disagree signals a hidden problem worth investigating ✓</li>
+<li><strong>C.</strong> It means the empathy map was built incorrectly and should be discarded</li>
+<li><strong>D.</strong> It means the user is being deliberately dishonest and should be excluded from research</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The notes state: 'She says the app is easy — and rewatches the same lecture three times. That gap is usually your best opportunity' — highlighting SAYS/DOES gaps as valuable insight sources, not flaws to discard.</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q34.</div>
+<div class="qbody">
+<p class="qtext">A team writes the problem statement: 'We need a mobile app.' What is the core weakness of this statement, per the Poor/Good problem-statement comparison?</p>
+<ul class="opts">
+<li><strong>A.</strong> It is too long and needs to be shortened</li>
+<li class="correct-opt"><strong>B.</strong> It has no user, no need, no insight — and the solution is already baked in ✓</li>
+<li><strong>C.</strong> It should have specified which app store to use</li>
+<li><strong>D.</strong> It correctly follows the [User] needs [need] because [insight] format</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The notes describe this exact line as the 'Poor' example: 'No user, no need, no insight — and the solution is already baked in.'</p>
+</div>
+</div>
+<div class="qblock">
+<div class="qnum">Q35.</div>
+<div class="qbody">
+<p class="qtext">A team proposes the How Might We question: 'How might we add a red button to the timetable screen?' What is the specific flaw here, according to the Goldilocks Test?</p>
+<ul class="opts">
+<li><strong>A.</strong> It is too broad, giving the team nothing usable</li>
+<li class="correct-opt"><strong>B.</strong> It is too narrow — the solution (a red button) has been smuggled into the question, rather than framing a real human need ✓</li>
+<li><strong>C.</strong> It correctly balances breadth and specificity</li>
+<li><strong>D.</strong> It should have asked about a blue button instead</li>
+</ul>
+<p class="answer-line"><strong>Correct Answer: B</strong></p>
+<p class="explanation"><strong>Explanation:</strong> The Goldilocks Test states that a question this narrow has 'smuggled the solution into the question' — the aim is a real human need with no solution attached, neither too broad nor too narrow.</p>
+</div>
+</div>
+<p style="text-align:center;"><a href="#top" class="back-to-top">↑ Back to top</a></p></section>
+
+  <footer>
+    Generated for INT335 Continuous Assessment preparation · 66 questions total
+  </footer>
+</div>
+</body>
+</html>
