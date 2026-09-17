@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INT335 — Quick Revision Flashcards</title>
+<style>
+  :root {
+    --bg: #f4f6f9;
+    --card: #ffffff;
+    --ink: #1c2530;
+    --ink-soft: #5b6672;
+    --accent: #3a5fcd;
+    --accent-dark: #2a47a8;
+    --accent-soft: #eef1fb;
+    --gold: #b8860b;
+    --border: #e1e5eb;
+    --radius: 16px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 20px 14px 60px;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; }
+  header.top { text-align: center; margin-bottom: 20px; }
+  header.top h1 { font-size: 1.3rem; margin: 0 0 4px; font-weight: 700; }
+  header.top p { margin: 0; color: var(--ink-soft); font-size: 0.9rem; }
+
+  /* MENU */
+  .menu-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(20,30,50,0.06);
+    border: 1px solid var(--border);
+    margin-bottom: 14px;
+  }
+  .menu-card h2 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin: 0 0 4px;
+  }
+  .menu-card .unit-desc {
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    margin: 0 0 14px;
+  }
+  .all-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+  .all-btn:hover { background: var(--accent-dark); }
+  .topic-list { display: flex; flex-direction: column; gap: 8px; }
+  .topic-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    text-align: left;
+    background: #fafbfd;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    cursor: pointer;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--ink);
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .topic-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
+  .topic-btn .count {
+    font-weight: 500;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    background: #eceff3;
+    padding: 2px 9px;
+    border-radius: 20px;
+  }
+
+  /* FLASHCARD VIEW */
+  .study-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    gap: 10px;
+  }
+  .study-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--ink-soft);
+  }
+  .counter {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .progress-track {
+    height: 6px;
+    background: var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 6px;
+    transition: width 0.25s ease;
+  }
+
+  .card-scene {
+    perspective: 1400px;
+    margin-bottom: 18px;
+  }
+  .flashcard {
+    position: relative;
+    width: 100%;
+    min-height: 260px;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(0.4, 0.2, 0.2, 1);
+  }
+  .flashcard.flipped { transform: rotateY(180deg); }
+  .face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    border-radius: var(--radius);
+    padding: 28px 26px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0 4px 18px rgba(20,30,50,0.1);
+    border: 1px solid var(--border);
+  }
+  .face-front {
+    background: var(--card);
+  }
+  .face-back {
+    background: var(--accent);
+    color: #fff;
+    transform: rotateY(180deg);
+    border: none;
+  }
+  .face-label {
+    position: absolute;
+    top: 16px;
+    left: 20px;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    opacity: 0.55;
+  }
+  .face-front .face-label { color: var(--accent); }
+  .face-back .face-label { color: #fff; }
+  .face-topic-tag {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--ink-soft);
+    background: var(--accent-soft);
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .face-front .face-topic-tag { display: block; }
+  .face-back .face-topic-tag { display: none; }
+  .face-text {
+    font-size: 1.12rem;
+    font-weight: 700;
+    line-height: 1.45;
+    text-align: center;
+  }
+  .face-back .face-text {
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.55;
+  }
+  .tap-hint {
+    position: absolute;
+    bottom: 14px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 0.72rem;
+    opacity: 0.5;
+    font-weight: 600;
+  }
+  .face-front .tap-hint { color: var(--ink-soft); }
+  .face-back .tap-hint { color: #fff; }
+
+  .nav-row {
+    display: flex;
+    gap: 10px;
+  }
+  .btn {
+    flex: 1;
+    padding: 13px 16px;
+    border-radius: 10px;
+    border: none;
+    font-size: 0.92rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s, opacity 0.15s;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: var(--accent-dark); }
+  .btn-secondary {
+    background: #fafbfd;
+    color: var(--ink);
+    border: 1.5px solid var(--border);
+  }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink-soft);
+    border: 1.5px solid var(--border);
+    flex: 0 0 auto;
+    padding: 13px 18px;
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  .shuffle-row {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  .shuffle-btn {
+    background: none;
+    border: none;
+    color: var(--ink-soft);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 8px 12px;
+  }
+  .shuffle-btn:hover { color: var(--accent); }
+
+  /* DONE SCREEN */
+  .done-wrap {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 40px 26px;
+    text-align: center;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 10px rgba(20,30,50,0.06);
+  }
+  .done-icon { font-size: 2.6rem; margin-bottom: 8px; }
+  .done-title { font-size: 1.2rem; font-weight: 700; margin: 0 0 6px; }
+  .done-sub { color: var(--ink-soft); font-size: 0.9rem; margin: 0 0 24px; }
+
+  .footer-note { text-align: center; color: var(--ink-soft); font-size: 0.78rem; margin-top: 20px; }
+
+  @media (max-width: 420px) {
+    .flashcard { min-height: 240px; }
+    .face { padding: 24px 20px; }
+    .face-text { font-size: 1.02rem; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>INT335 — Quick Revision</h1>
+    <p>Flashcards · Foundations of Design Thinking · Empathy &amp; Observation</p>
+  </header>
+
+  <div id="app"></div>
+  <div class="footer-note" id="footerNote"></div>
+</div>
+
+<script>
+const DATA = {"unit1": {"title": "Unit 1 \u2014 Foundations of Learning, Creativity & Design Thinking", "topics": {"Thinking & Learning": [{"f": "Focused Mode of thinking", "b": "Concentrated attention on a specific task using established neural pathways. Logical, structured, analytical, sequential. E.g. solving equations, writing code, analysing data."}, {"f": "Diffuse Mode of thinking", "b": "Relaxed thinking that lets the brain make broader connections among ideas. Creative, exploratory, flexible, associative. E.g. brainstorming, creative writing."}, {"f": "The Practical Rule for problem-solving", "b": "Alternate between focused and diffuse modes. When stuck, take a break to allow diffuse processing \u2014 but struggle first in focused mode, then step away. Diffuse mode does not work on an empty mind."}, {"f": "Mendeleev's periodic table story", "b": "He is said to have arranged the periodic table after dreaming about it \u2014 but only after days of focused-mode struggle. Lesson: diffuse mode reorganises material you've already struggled with."}, {"f": "VARK framework \u2014 4 styles", "b": "V = Visual (diagrams, charts, videos); A = Auditory (listening, discussion); R = Reading/Writing (books, notes); K = Kinesthetic (hands-on practice)."}, {"f": "VARK Activity 1.2 scoring pairs", "b": "V = statements 1+5, A = 2+6, R = 3+7, K = 4+8."}, {"f": "What research actually says about VARK", "b": "VARK is a useful self-reflection prompt, but the stronger claim \u2014 that teaching to your preferred style improves results \u2014 has repeatedly failed in controlled studies."}, {"f": "Three study strategies that DO replicate in research", "b": "Retrieval practice, spacing, and interleaving."}], "Cognitive Barriers": [{"f": "Functional Fixedness", "b": "The tendency to see objects only for their traditional/conventional purpose \u2014 limiting creative problem-solving. E.g. seeing a paper clip only as a document holder."}, {"f": "Bucket technique to beat fixedness", "b": "Stop thinking about the object's uses; instead list its PROPERTIES (hollow, watertight, rigid, light, has a handle, amplifies sound) \u2014 then find a use for each property."}, {"f": "Fear of Failure (cognitive block)", "b": "Hesitation to propose ideas due to fear of criticism."}, {"f": "Premature Judgment (cognitive block)", "b": "Rejecting ideas before exploring them fully."}, {"f": "Conformity (cognitive block)", "b": "Following conventional thinking in order to fit in."}, {"f": "The Expertise Trap (cognitive block)", "b": "Over-reliance on past solutions \u2014 the more you know, the more you reach for what worked before."}, {"f": "How Design Thinking breaks cognitive blocks", "b": "Through empathy, experimentation, collaboration, and structured creative problem-solving."}], "Creativity, Invention, Innovation": [{"f": "Creativity \u2014 definition & example", "b": "The ability to generate original and useful ideas. Example: imagining a drone delivery system."}, {"f": "Invention \u2014 definition & example", "b": "Creating something entirely new that did not exist before. Example: the first telephone, by A. G. Bell."}, {"f": "Innovation \u2014 definition & example", "b": "Successfully implementing creative ideas to create value. Example: the iPhone reshaping the smartphone market."}, {"f": "Key rule linking the three concepts", "b": "Creativity becomes innovation only when it delivers value. (Creativity \u2192 Idea \u2192 Invention \u2192 New Thing \u2192 Innovation \u2192 Value)"}, {"f": "Incremental Invention \u2014 definition & examples", "b": "Small but meaningful improvements to an existing product/process. E.g. USB \u2192 USB-C; mobile phones \u2192 smartphones; petrol cars \u2192 hybrid cars."}, {"f": "Disruptive Innovation \u2014 definition", "b": "A new product/service/business model that transforms markets with simpler, cheaper or more accessible solutions. Creates new markets, challenges incumbents, focuses on unmet needs."}, {"f": "Disruptors and what they replaced", "b": "Netflix replaced DVD rental stores; Uber replaced traditional taxis; Airbnb replaced the hotel industry."}], "Kinds of Problems": [{"f": "Well-Defined problem", "b": "Clear goals, constraints, and solution \u2014 one correct answer. E.g. equations, puzzles, technical fixes."}, {"f": "Ill-Defined problem", "b": "Unclear goals or paths; many possible solutions. E.g. app design, marketing strategy."}, {"f": "Wicked problem", "b": "Complex, interconnected; judged as better or worse, not right or wrong. E.g. climate, poverty, healthcare."}, {"f": "Why this matters for Design Thinking", "b": "Traditional engineering trains you well on well-defined problems. Design Thinking exists because ill-defined and wicked problems don't yield to the same methods."}], "History & Big Idea of Design Thinking": [{"f": "Design Thinking \u2014 core definition", "b": "A human-centred approach to innovation and problem-solving that emphasises understanding the needs and experiences of users. Iterative, practical, puts the user at the centre."}, {"f": "Design Thinking's Three Beliefs", "b": "1) Problems are best understood from the user's side. 2) Ideas improve by being tested, not argued. 3) Failure early is cheaper than failure late."}, {"f": "Herbert Simon (1969\u201370s)", "b": "Framed design as 'a way of thinking' \u2014 an early milestone in Design Thinking's history."}, {"f": "Rittel \u2014 'wicked problems'", "b": "Coined the term 'wicked problems' during the mid-1960s design methods movement."}, {"f": "Nigel Cross & Rowe (1982\u201387)", "b": "Nigel Cross wrote 'Designerly Ways of Knowing'; Rowe published 'Design Thinking'."}, {"f": "IDEO founding & Stanford d.school", "b": "IDEO founded in 1991, pioneering human-centred design. Stanford d.school established in 2005."}, {"f": "Lawson's Experiment \u2014 scientists vs designers", "b": "Scientists are problem-focused: analyse thoroughly before proposing solutions. Designers are solution-focused: create and test many solutions rapidly, learning through iteration."}], "d.school & IDEO Frameworks": [{"f": "Stanford d.school \u2014 Five Stages", "b": "Empathize \u2192 Define \u2192 Ideate \u2192 Prototype \u2192 Test, then iterate (loop back). The dashed arrow shows testing feeds back into empathy \u2014 the process is iterative, not linear."}, {"f": "Empathize stage", "b": "Understand needs and challenges of users."}, {"f": "Define stage", "b": "Pinpoint the core problem."}, {"f": "Ideate stage", "b": "Generate many ideas."}, {"f": "Prototype stage", "b": "Build a simple model."}, {"f": "Test stage", "b": "Evaluate and refine with users, then loop back."}, {"f": "IDEO's Three Overlapping Lenses (HCD)", "b": "Desirability (do people want this?), Feasibility (can we build this?), Viability (is it economically sustainable?). Genuine innovation lies where all three overlap."}, {"f": "What happens if only 1\u20132 IDEO lenses are met", "b": "The concept fails in practice \u2014 you need all three (desirability, feasibility, viability) to overlap for real innovation."}, {"f": "Waterfall model \u2014 definition & weakness", "b": "Linear, step-by-step: Plan \u2192 Build \u2192 Test \u2192 Ship, each phase finished before the next. User feedback comes only at the end, so changes are costly."}, {"f": "Human-Centred Design vs Waterfall", "b": "HCD is iterative and user-focused: Empathize \u2192 Prototype \u2192 Test, looping continuously. This distinction is Course Outcome CO1 in one picture."}], "Case Studies (Successes & Failures)": [{"f": "Airbnb's Photography Pivot \u2014 the problem", "b": "In 2009, bookings were low and revenue flat. The data showed WHAT was happening but not WHY."}, {"f": "Airbnb's Photography Pivot \u2014 the insight & solution", "b": "Founders flew to New York, visited hosts personally, and found listings had poor-quality amateur photos discouraging bookings. They rented a camera and photographed listings themselves \u2014 professional photos dramatically increased bookings."}, {"f": "Airbnb case \u2014 key lesson", "b": "A simple, empathy-driven intervention that does NOT scale \u2014 which is exactly why nobody had tried it before."}, {"f": "Google Glass (2013) \u2014 why it failed", "b": "Social concerns (people disliked being recorded), awkward design that drew attention, no clear use case, and high price ($1,500)."}, {"f": "Google Glass \u2014 the sequel", "b": "Relaunched as Glass Enterprise Edition for warehouse/factory technicians \u2014 same tech, different user, different (successful) verdict."}, {"f": "Google Glass \u2014 key lesson", "b": "A product is never simply good or bad in the abstract \u2014 it is good or bad for someone. Technical innovation without user desirability fails."}, {"f": "Aravind Eye Care \u2014 background", "b": "Dr. Govindappa Venkataswamy ('Dr. V') founded Aravind Eye Hospital in Madurai in 1976 with 11 beds, after retiring from government service."}, {"f": "Aravind \u2014 the real problem", "b": "Not medical (cataract surgery already worked) \u2014 it was ACCESS: surgery cost more than rural patients earned in months, hospitals were far, surgeons scarce."}, {"f": "Aravind \u2014 the reframe", "b": "Dr. V asked: 'How does McDonald's serve millions of people the same product, consistently, cheaply, anywhere?' \u2014 studying the fast-food assembly line as an analogous inspiration."}, {"f": "Aravind's approach (5 elements)", "b": "Assembly-line surgery (2 tables/surgeon), task-shifting (rural women trained as paramedical staff), cross-subsidy pricing (comfort tier, not surgical quality), vertical integration (Aurolab makes lenses locally), outreach camps in villages."}, {"f": "Aravind \u2014 Lessons Learned", "b": "1) Best analogies often come from unrelated industries. 2) Affordability can be DESIGNED \u2014 an outcome of process, not just subsidy. 3) Dignity is a design requirement \u2014 free & paying patients get the same surgeons/surgery, only comfort tier differs."}]}}, "unit2": {"title": "Unit 2 \u2014 Empathy, Observation & Problem Identification", "topics": {"Empathy Fundamentals": [{"f": "Empathy \u2014 definition", "b": "The ability to understand another person's feelings, experiences, motivations, frustrations and goals. In Design Thinking: seeing the world from the user's point of view."}, {"f": "What designers must understand about users", "b": "What users Think, Feel, Say, and Do. Sequence: Observe \u2192 Understand \u2192 Empathize \u2192 Design."}, {"f": "Why empathy matters (5 reasons)", "b": "Better insights, prevents assumptions, reveals hidden problems, builds stronger connections/trust, leads to meaningful solutions."}, {"f": "Sympathy \u2014 definition & example", "b": "Feeling for someone, from a distance, without action. E.g. 'Poor first-years, getting lost must be awful.' Pity produces charity."}, {"f": "Empathy \u2014 definition & example (design context)", "b": "Understanding a situation as the person experiences it. E.g. 'I followed three first-years for a morning \u2014 the block numbering resets in each wing.' Empathy produces design."}, {"f": "Compassion \u2014 definition & example", "b": "Empathy PLUS the decision to act. E.g. 'So we are renumbering the wing signage this week.' Compassion produces a change."}, {"f": "The Most Common Mistake in UX", "b": "Assuming you know what users want because you are a user yourself ('I'm a student too, so I know what students need') \u2014 your experience becomes the whole sample instead of one hypothesis to check against six other people."}, {"f": "Computational Empathy \u2014 definition", "b": "Applying empathy to software development \u2014 designing systems that understand and respond to human emotions/behaviour, often using AI."}, {"f": "Computational empathy examples", "b": "ChatGPT (understanding intent), Netflix (recommending to suit mood), Spotify (matching listening habits), healthcare apps (monitoring well-being), educational apps (adapting to performance)."}], "User Research": [{"f": "User Research \u2014 definition", "b": "The process of understanding users' needs, behaviours, goals and challenges, to gather information before creating solutions. Reduces assumptions; supports evidence-based decisions."}, {"f": "Qualitative research \u2014 focus & method", "b": "Understanding WHY and HOW. Methods: interviews, observations, focus groups. Small sample (5\u201320). Best for exploring problems, generating insights."}, {"f": "Quantitative research \u2014 focus & method", "b": "Measuring WHAT and HOW MANY. Methods: surveys, analytics, A/B tests. Large sample (100+). Best for validating hypotheses, measuring scale."}, {"f": "The sequence that works (qual + quant)", "b": "Use qualitative research to discover insights, then quantitative research to validate them at scale. They are partners, not rivals."}, {"f": "Qualitative research \u2014 characteristics", "b": "Exploratory, contextual understanding, subjectivity/reflexivity, small purposive sampling, in-depth data, iterative analysis."}, {"f": "Quantitative research \u2014 characteristics", "b": "Objectivity, structured approach, numeric data/large samples, generalisability, standardised collection, precision/statistical analysis, replication."}], "Field Observation & AEIOU": [{"f": "Field Observation \u2014 definition", "b": "A research method where designers observe users in their natural environment \u2014 observing what users actually DO, rather than asking what they do. 'Be a fly on the wall.'"}, {"f": "AEIOU framework \u2014 what it stands for", "b": "Activities, Environment, Interactions, Objects, Users \u2014 five perspectives for systematically observing users."}, {"f": "A \u2014 Activities", "b": "Tasks users perform to achieve a goal. Ask: what is the user doing, how often, why, what are the steps? E.g. studying, shopping online, travelling to work."}, {"f": "E \u2014 Environment", "b": "The physical or digital space where users perform activities; affects experience/behaviour. Key factors: lighting, noise, temperature, space, technology."}, {"f": "I \u2014 Interactions", "b": "How users engage with people, products, or systems. Reveals usability problems (e.g. confusing navigation on a learning platform)."}, {"f": "O \u2014 Objects", "b": "Tools, devices, and products used during activities (mobile phones, laptops, books, apps). A badly designed object shows up immediately in observation."}, {"f": "U \u2014 Users", "b": "The individuals whose experiences/behaviours are studied \u2014 their roles and characteristics."}, {"f": "Photocopy shop worked example \u2014 key insight", "b": "4 of 11 people left without printing after asking the price (Activities); handwritten rate card taped at knee height (Environment); operator asks 'colour or black?' every time (Interactions)."}, {"f": "'What the Observer Did Not Write'", "b": "'The shop is badly managed' / 'Students are impatient' \u2014 these are JUDGEMENTS, not observations. Record facts, not interpretations."}], "Research Ethics & Consent": [{"f": "5 Research Ethics rules", "b": "1) Ask first \u2014 never interview/photograph without permission. 2) Say who you are (use consent script). 3) Stay anonymous \u2014 pseudonym/initials only. 4) Do not photograph people \u2014 sketch instead. 5) Be safe \u2014 meet in open public areas, in daylight, in pairs."}, {"f": "The verbal consent script (key elements)", "b": "State you're a student doing an INT335 project, ask permission for ~5 min of voluntary questions, say they can stop/skip anytime, and confirm you won't record their name."}, {"f": "Suitable observation sites", "b": "Public and appropriate: library reading area, corridor, bus stop, mess seating area. Avoid residential spaces like hostel rooms; ask your faculty mentor if in doubt."}], "What\u2013How\u2013Why Framework": [{"f": "What\u2013How\u2013Why \u2014 purpose", "b": "A tool for moving from observed behaviour to underlying motivation in three stages. Observation without interpretation is data; interpretation without observation is guesswork."}, {"f": "WHAT stage", "b": "Observe what the user is doing (not what you think they're doing) \u2014 record actions/events objectively. E.g. opens app, adds to cart, hesitates before ordering."}, {"f": "HOW stage", "b": "Analyse HOW the user performs the activity \u2014 actions, effort, emotions, challenges. E.g. scrolls back and forth, re-reads delivery fees, looks for promotions."}, {"f": "WHY stage", "b": "Identify motivations, emotions and needs behind the behaviour. This is where INFERENCE (carefully labelled as inference) begins. E.g. wants best value, feels unsure about final choice."}], "Interviews & Inquiry": [{"f": "Characteristics of good interview questions", "b": "Open-ended (not yes/no), non-leading, exploratory, user-focused (about real experiences, not hypotheticals)."}, {"f": "Poor vs Better question example", "b": "Poor: 'Is parking a problem?' Better: 'Walk me through what happens when you arrive on campus.'"}, {"f": "The 80/20 rule for interviews", "b": "Listen more than you talk. Don't defend or explain your ideas."}, {"f": "Seven Interviewing Techniques", "b": "1) Five Whys, 2) Tell me a story, 3) Show me, 4) Embrace silence, 5) Follow emotions, 6) Seek contradictions, 7) Grand tour."}, {"f": "Embrace Silence technique", "b": "Wait 3\u20135 seconds after asking a question. People fill silence with the thing they were not going to say. Hardest but most productive technique."}, {"f": "Seek Contradictions technique", "b": "Curiously (never accusingly) point out inconsistency: 'Earlier you said X, and just now Y...'"}, {"f": "Grand Tour technique", "b": "'Walk me through your typical morning, from waking up to reaching class.'"}, {"f": "Unbiased interview guidelines", "b": "Ask open-ended questions, avoid leading questions, listen without interrupting, observe body language/emotions, encourage stories."}, {"f": "Five Whys worked example \u2014 outcome", "b": "Started: 'the library is too crowded' \u2192 build a bigger library. Ended (Why 5): students feel they're wasting time memorising instead of learning. The first Why is almost never the real one."}, {"f": "Spot the Mistake 2.1 \u2014 common question faults", "b": "Closed (yes/no), leading, hypothetical, or focused on YOUR solution instead of the user's actual life/experience."}], "Needs & Pain Points": [{"f": "Explicit Needs \u2014 definition & examples", "b": "What users SAY they want, stated clearly in interviews. E.g. 'I want faster checkout', faster internet, lower cost."}, {"f": "Implicit Needs \u2014 definition & examples", "b": "What users actually need, often unspoken \u2014 revealed through observation/analysis. E.g. safety, confidence, comfort, trust, feeling in control."}, {"f": "Say\u2013Do Gap \u2014 definition", "b": "The gap between what people report and what they actually do. E.g. shoppers said they preferred lighter roast coffee, but reached for dark roast when offered a free cup."}, {"f": "Say\u2013Do Gap \u2014 the rule", "b": "Ask what people do; watch what people choose. Stated preference = evidence about self-image. Observed behaviour = evidence about need."}, {"f": "Pain Points \u2014 definition & categories", "b": "Specific problems/frustrations users face trying to accomplish a goal. Categories: Process (inefficient procedures), Support (lack of help), Financial (cost), Productivity (wastes time/effort)."}, {"f": "Pain point evidence rule", "b": "Every pain point you record needs evidence \u2014 a quote or a count. Identify your weakest-evidence pain point and go find out more."}], "Case Studies (Unit 2)": [{"f": "CoWIN case study \u2014 the problem", "b": "During COVID-19, India needed to schedule/certify vaccinations for over a billion people with hugely varied digital literacy, connectivity, and language."}, {"f": "CoWIN \u2014 key insight & response", "b": "Insight: one rigid flow would exclude millions. Response: multiple assisted pathways (self, helpdesk, on-site), common backend with many front-ends, QR-verifiable certificates, open slot APIs."}, {"f": "Namma Yatri \u2014 the empathy shift", "b": "Instead of the usual focus on riders, Namma Yatri (Bengaluru) studied auto-rickshaw DRIVERS \u2014 finding commission cuts, unpredictable algorithm changes, and no route of appeal."}, {"f": "Namma Yatri \u2014 deepest pain point", "b": "Powerlessness, not price."}, {"f": "Namma Yatri \u2014 outcome & lesson", "b": "Zero-commission pilot with a small flat subscription, built on open protocols; scaled to millions of rides with higher driver earnings. Lesson: empathising with the person PROVIDING a service (not just consuming it) produces radically different solutions."}], "Personas & Empathy Maps": [{"f": "User Persona \u2014 definition", "b": "A fictional representation of a target user based on real research data. Components: name, demographics (age/role/location), goals, frustrations, needs, behaviours, a representative quote."}, {"f": "The rule that makes personas useful", "b": "A persona is a research summary, NOT an invented character. Every line must be traceable to something a real person said or did \u2014 if you can't point to the interview, delete it."}, {"f": "Traceable vs Invented persona detail", "b": "Traceable: 'I want to learn better and score good grades' (from Interview 2). Invented (bad): 'Rahul loves cricket and drinks three coffees a day' \u2014 nobody said this."}, {"f": "Target Archetype \u2014 definition", "b": "A broad group of users with similar behaviours/characteristics/needs \u2014 e.g. college students, working professionals \u2014 rather than one individual profile. Archetypes help segment; personas make one group concrete enough to design for."}, {"f": "Empathy Map \u2014 definition & quadrants", "b": "Synthesises observations about users. Four quadrants: SAYS (direct quotes), THINKS (beliefs/concerns), DOES (observable actions), FEELS (emotions/attitudes)."}, {"f": "Reading an Empathy Map \u2014 the gap that matters", "b": "Where SAYS and DOES disagree is usually your best opportunity. E.g. 'the app is easy to use' (SAYS) but rewatches the same lecture 3 times (DOES)."}], "Framing the Problem": [{"f": "Problem Statement format", "b": "[User] needs [need] because [insight]."}, {"f": "Poor vs Good problem statement", "b": "Poor: 'We need a mobile app' \u2014 no user, no need, no insight, solution baked in. Good: 'First-year students need a simple way to navigate campus because they frequently get lost and feel anxious about being late.'"}, {"f": "How Might We (HMW) questions \u2014 purpose", "b": "Reframe problems as opportunities for creative solutions. E.g. 'How might we reduce waiting time in the cafeteria?'"}, {"f": "The Goldilocks Test for HMW questions", "b": "Too broad ('How might we improve education?') = nothing usable. Too narrow ('add a red button to the timetable screen') = solution smuggled into the question. Aim for the middle: a real human need, no solution attached."}]}}};
+
+let state = {
+  screen: 'menu',
+  deck: [],
+  deckLabel: '',
+  idx: 0,
+  flipped: false
+};
+
+const app = document.getElementById('app');
+const footerNote = document.getElementById('footerNote');
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function countCards(topics) {
+  return Object.values(topics).reduce((sum, arr) => sum + arr.length, 0);
+}
+
+function renderMenu() {
+  footerNote.textContent = 'Tap a card to flip it · use Shuffle to mix the order';
+  let html = '';
+
+  for (const ukey of ['unit1', 'unit2']) {
+    const unit = DATA[ukey];
+    const total = countCards(unit.topics);
+    html += `<div class="menu-card">
+      <h2>${unit.title}</h2>
+      <p class="unit-desc">${total} flashcards across ${Object.keys(unit.topics).length} topics</p>
+      <button class="all-btn" onclick="startDeck('${ukey}', null)">
+        <span>Study All of ${unit.title.split('—')[0].trim()}</span>
+        <span>${total} cards →</span>
+      </button>
+      <div class="topic-list">`;
+    for (const topic of Object.keys(unit.topics)) {
+      const count = unit.topics[topic].length;
+      html += `<button class="topic-btn" onclick="startDeck('${ukey}', ${JSON.stringify(topic)})">
+        <span>${topic}</span>
+        <span class="count">${count}</span>
+      </button>`;
+    }
+    html += `</div></div>`;
+  }
+  app.innerHTML = html;
+}
+
+function startDeck(ukey, topic) {
+  const unit = DATA[ukey];
+  let cards = [];
+  let label = '';
+  if (topic === null) {
+    for (const t of Object.keys(unit.topics)) {
+      unit.topics[t].forEach(c => cards.push({...c, topic: t}));
+    }
+    label = unit.title;
+  } else {
+    cards = unit.topics[topic].map(c => ({...c, topic: topic}));
+    label = topic;
+  }
+  state = {
+    screen: 'study',
+    deck: cards,
+    deckLabel: label,
+    idx: 0,
+    flipped: false
+  };
+  renderStudy();
+}
+
+function renderStudy() {
+  const total = state.deck.length;
+  const card = state.deck[state.idx];
+  const pct = Math.round(((state.idx) / total) * 100);
+  footerNote.textContent = 'Tap the card to flip it';
+
+  app.innerHTML = `
+    <div class="study-bar">
+      <span class="study-title">${state.deckLabel}</span>
+      <span class="counter">${state.idx + 1} / ${total}</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+
+    <div class="card-scene">
+      <div class="flashcard ${state.flipped ? 'flipped' : ''}" id="flashcardEl" onclick="flipCard()">
+        <div class="face face-front">
+          <span class="face-label">Term</span>
+          <span class="face-topic-tag">${card.topic}</span>
+          <div class="face-text">${card.f}</div>
+          <div class="tap-hint">Tap to reveal</div>
+        </div>
+        <div class="face face-back">
+          <span class="face-label">Explanation</span>
+          <div class="face-text">${card.b}</div>
+          <div class="tap-hint">Tap to flip back</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-ghost" onclick="backToMenu()">Menu</button>
+      <button class="btn btn-secondary" ${state.idx === 0 ? 'disabled style="opacity:0.4;cursor:not-allowed;"' : ''} onclick="prevCard()">← Prev</button>
+      <button class="btn btn-primary" onclick="nextCard()">${state.idx === total - 1 ? 'Finish' : 'Next →'}</button>
+    </div>
+    <div class="shuffle-row">
+      <button class="shuffle-btn" onclick="shuffleDeck()">🔀 Shuffle this set</button>
+    </div>
+  `;
+}
+
+function flipCard() {
+  state.flipped = !state.flipped;
+  document.getElementById('flashcardEl').classList.toggle('flipped');
+}
+
+function prevCard() {
+  if (state.idx > 0) {
+    state.idx--;
+    state.flipped = false;
+    renderStudy();
+  }
+}
+
+function nextCard() {
+  if (state.idx < state.deck.length - 1) {
+    state.idx++;
+    state.flipped = false;
+    renderStudy();
+  } else {
+    renderDone();
+  }
+}
+
+function shuffleDeck() {
+  state.deck = shuffle(state.deck);
+  state.idx = 0;
+  state.flipped = false;
+  renderStudy();
+}
+
+function backToMenu() {
+  state.screen = 'menu';
+  renderMenu();
+}
+
+function renderDone() {
+  footerNote.textContent = 'Deck complete';
+  app.innerHTML = `
+    <div class="done-wrap">
+      <div class="done-icon">🎉</div>
+      <div class="done-title">Deck complete!</div>
+      <div class="done-sub">You reviewed all ${state.deck.length} cards in ${state.deckLabel}.</div>
+      <div class="nav-row">
+        <button class="btn btn-ghost" onclick="backToMenu()">Menu</button>
+        <button class="btn btn-secondary" onclick="restartDeck()">Restart Deck</button>
+        <button class="btn btn-primary" onclick="shuffleAndRestart()">Shuffle &amp; Restart</button>
+      </div>
+    </div>
+  `;
+}
+
+function restartDeck() {
+  state.idx = 0;
+  state.flipped = false;
+  renderStudy();
+}
+
+function shuffleAndRestart() {
+  state.deck = shuffle(state.deck);
+  state.idx = 0;
+  state.flipped = false;
+  renderStudy();
+}
+
+renderMenu();
+</script>
+</body>
+</html>
