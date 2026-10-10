@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INT335 CA Practice — MCQ Tool</title>
+<style>
+  :root {
+    --bg: #f4f6f9;
+    --card: #ffffff;
+    --ink: #1c2530;
+    --ink-soft: #5b6672;
+    --accent: #3a5fcd;
+    --accent-dark: #2a47a8;
+    --green: #1e8e5a;
+    --green-bg: #e7f7ef;
+    --red: #d0402a;
+    --red-bg: #fdeceb;
+    --border: #e1e5eb;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 20px 14px 60px;
+  }
+  .wrap { max-width: 700px; margin: 0 auto; }
+  header.top {
+    text-align: center;
+    margin-bottom: 22px;
+  }
+  header.top h1 {
+    font-size: 1.35rem;
+    margin: 0 0 4px;
+    font-weight: 700;
+  }
+  header.top p {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+  }
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 22px;
+    box-shadow: 0 2px 10px rgba(20,30,50,0.06);
+    border: 1px solid var(--border);
+  }
+
+  /* MENU */
+  .menu-section { margin-bottom: 18px; }
+  .menu-section h2 {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    margin: 0 0 10px;
+    font-weight: 700;
+  }
+  .unit-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    text-align: left;
+    background: #fafbfd;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+    transition: border-color 0.15s, background 0.15s, transform 0.1s;
+  }
+  .unit-btn:hover { border-color: var(--accent); background: #f2f5ff; }
+  .unit-btn:active { transform: scale(0.99); }
+  .unit-btn .meta {
+    font-weight: 500;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+  }
+  .unit-btn .arrow { color: var(--accent); font-size: 1.1rem; margin-left: 10px; }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .progress-track {
+    flex: 1;
+    height: 8px;
+    background: var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 6px;
+    transition: width 0.25s ease;
+  }
+  .progress-label {
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    white-space: nowrap;
+    font-weight: 600;
+  }
+
+  .qtop {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 4px;
+  }
+  .qtag {
+    display: inline-block;
+    background: #eef1fb;
+    color: var(--accent-dark);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+  .score-pill {
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .qtext {
+    font-size: 1.08rem;
+    line-height: 1.5;
+    font-weight: 600;
+    margin: 0 0 18px;
+  }
+
+  .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 6px; }
+  .option {
+    text-align: left;
+    background: #fafbfd;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 13px 16px;
+    font-size: 0.96rem;
+    cursor: pointer;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    line-height: 1.4;
+    transition: border-color 0.12s, background 0.12s;
+  }
+  .option:hover:not(.locked) { border-color: var(--accent); background: #f2f5ff; }
+  .option .letter {
+    flex-shrink: 0;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: #eceff3;
+    color: var(--ink-soft);
+    font-size: 0.78rem;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .option.correct { border-color: var(--green); background: var(--green-bg); }
+  .option.correct .letter { background: var(--green); color: #fff; }
+  .option.incorrect { border-color: var(--red); background: var(--red-bg); }
+  .option.incorrect .letter { background: var(--red); color: #fff; }
+  .option.locked { cursor: default; }
+  .option.dimmed { opacity: 0.55; }
+
+  .feedback-box {
+    margin-top: 16px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    display: none;
+  }
+  .feedback-box.show { display: block; }
+  .feedback-box.correct-fb { background: var(--green-bg); border: 1px solid #b9e6cf; }
+  .feedback-box.incorrect-fb { background: var(--red-bg); border: 1px solid #f4c6bd; }
+  .feedback-verdict { font-weight: 700; margin-bottom: 4px; }
+  .feedback-verdict.correct-fb { color: var(--green); }
+  .feedback-verdict.incorrect-fb { color: var(--red); }
+
+  .nav-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .btn {
+    flex: 1;
+    padding: 13px 16px;
+    border-radius: 10px;
+    border: none;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s, opacity 0.15s;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: var(--accent-dark); }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink-soft);
+    border: 1.5px solid var(--border);
+    flex: 0 0 auto;
+    padding: 13px 18px;
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* RESULTS */
+  .results-icon { font-size: 2.6rem; text-align: center; margin-bottom: 6px; }
+  .results-title { text-align: center; font-size: 1.3rem; font-weight: 700; margin: 0 0 4px; }
+  .results-sub { text-align: center; color: var(--ink-soft); font-size: 0.92rem; margin-bottom: 22px; }
+  .score-ring-wrap { display: flex; justify-content: center; margin-bottom: 22px; }
+  .score-big {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--accent);
+    text-align: center;
+  }
+  .score-big span { font-size: 1.2rem; color: var(--ink-soft); font-weight: 600; }
+  .stat-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+  .stat-box {
+    flex: 1;
+    background: #fafbfd;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 10px;
+    text-align: center;
+  }
+  .stat-box .num { font-size: 1.25rem; font-weight: 800; }
+  .stat-box .lbl { font-size: 0.72rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.03em; margin-top: 2px; }
+  .stat-box.correct-num .num { color: var(--green); }
+  .stat-box.incorrect-num .num { color: var(--red); }
+
+  .review-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+  .review-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: #fafbfd;
+    border: 1px solid var(--border);
+    font-size: 0.85rem;
+  }
+  .review-item .rmark { flex-shrink: 0; font-weight: 800; font-size: 0.95rem; }
+  .review-item.right .rmark { color: var(--green); }
+  .review-item.wrong .rmark { color: var(--red); }
+  .review-item .rtext { color: var(--ink-soft); line-height: 1.4; }
+
+  .footer-note {
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 0.78rem;
+    margin-top: 22px;
+  }
+
+  @media (max-width: 420px) {
+    .card { padding: 16px; }
+    .qtext { font-size: 1rem; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>INT335 — CA Practice</h1>
+    <p>Foundations of Design Thinking · Empathy &amp; Observation</p>
+  </header>
+
+  <div class="card" id="app"></div>
+
+  <div class="footer-note" id="footerNote"></div>
+</div>
+
+<script>
+const DATA = {"unit1": [{"q": "A student spends two hours in deep focus solving a tricky circuit problem, gets nowhere, then goes for a walk and the answer suddenly appears. Which concept from Unit 1 best explains this?", "options": ["The candle problem", "Alternating focused and diffuse modes", "The VARK framework", "Functional fixedness"], "answer": 1, "explanation": "The notes describe the practical rule that effective problem-solving alternates focused and diffuse modes \u2014 struggle first (focused), then step away so the diffuse mode can reorganise the material, as in the Mendeleev example."}, {"q": "Mendeleev is said to have arranged the periodic table after dreaming about it. According to the Unit 1 notes, what is the key lesson from this story?", "options": ["Dreams are a reliable source of scientific discovery", "Diffuse mode does not work on an empty mind \u2014 struggle first, then step away", "Focused mode is always superior to diffuse mode", "Creativity requires sleep deprivation"], "answer": 1, "explanation": "The notes explicitly state the diffuse mode reorganises material you have already struggled with in focused mode; it doesn't work on an empty mind."}, {"q": "A trainer tells learners: 'You're a Visual learner, so I'll only ever teach you using diagrams from now on, and you'll learn best.' Based on the 'Note on Evidence' slide, what is wrong with this claim?", "options": ["VARK does not include a Visual category", "Controlled studies have not supported the claim that matching teaching style to preferred style improves results", "Visual learners actually perform worse than others", "The VARK model has been officially withdrawn from use"], "answer": 1, "explanation": "The notes say the stronger claim \u2014 that being taught in your preferred style improves results \u2014 has repeatedly failed to hold up in controlled studies, even though VARK remains a useful self-reflection prompt."}, {"q": "In Activity 1.2, a student scores statements 1 and 5 together. Which VARK style does this pairing represent?", "options": ["Auditory", "Reading/Writing", "Visual", "Kinesthetic"], "answer": 2, "explanation": "The scoring key pairs V = statements 1+5, A = 2+6, R = 3+7, K = 4+8."}, {"q": "Three study strategies are said to actually replicate in research, unlike the strict VARK-matching claim. Which set is it?", "options": ["Retrieval practice, spacing, and interleaving", "Visual aids, note-taking, and group study", "Cramming, rereading, and highlighting", "Lecture attendance, memorisation, and repetition"], "answer": 0, "explanation": "The notes list retrieval practice, spacing, and interleaving as the three study strategies that do replicate."}, {"q": "A team is asked to find non-obvious uses for a paper clip during the 'Mystery Bag' activity. Struggling to think beyond 'holding papers together' is an example of which cognitive barrier?", "options": ["Conformity", "Fear of failure", "Functional fixedness", "The expertise trap"], "answer": 2, "explanation": "Functional fixedness is the tendency to see objects only for their traditional purpose, exactly as illustrated by the paper clip example."}, {"q": "In the plastic bucket worked example, students who list six or seven uses and then stall are advised to change their approach. What technique unlocks more ideas?", "options": ["Ask a friend for ideas", "List the object's properties first, then find a use for each property", "Look up bucket uses online", "Only consider the bucket's original manufacturing purpose"], "answer": 1, "explanation": "The technique is to stop thinking about the object and start listing its properties (hollow, watertight, rigid, etc.), then derive uses from each property \u2014 this produced 28 uses from 6 properties."}, {"q": "An engineer with 15 years of experience keeps proposing the same solution pattern for every new problem, even when it doesn't quite fit. Which cognitive block is this closest to?", "options": ["Premature judgment", "The expertise trap", "Conformity", "Fear of failure"], "answer": 1, "explanation": "The expertise trap is over-reliance on past solutions \u2014 the more you know, the more you reach for what worked before."}, {"q": "During a brainstorming session, a junior team member rejects her own idea internally before even saying it aloud, worried others will laugh. This illustrates which cognitive block?", "options": ["The expertise trap", "Fear of failure", "Premature judgment", "Conformity"], "answer": 1, "explanation": "Fear of failure is the hesitation to propose ideas due to fear of criticism, which matches the scenario of self-censoring before speaking."}, {"q": "A student imagines a drone delivery system in detail but never builds or launches it. According to the 'Three Concepts, Often Confused' table, this is best classified as:", "options": ["Invention", "Innovation", "Creativity", "Disruption"], "answer": 2, "explanation": "Creativity is the ability to generate original and useful ideas \u2014 the table's own example for creativity is 'imagining a drone delivery system.'"}, {"q": "Alexander Graham Bell created the first telephone \u2014 something that did not exist before. Which concept does this exemplify?", "options": ["Innovation", "Invention", "Incremental improvement", "Disruption"], "answer": 1, "explanation": "Invention is creating something entirely new that did not exist before; the notes cite the first telephone by A. G. Bell as the example."}, {"q": "The iPhone is described as 'reshaping the smartphone market.' Which of the three concepts (creativity, invention, innovation) does this represent, and why?", "options": ["Invention, because it was the first phone ever made", "Innovation, because it successfully implemented creative ideas to create value at scale", "Creativity, because it was an original idea", "None of the three \u2014 it is simply good marketing"], "answer": 1, "explanation": "Innovation is successfully implementing creative ideas to create value; the notes state creativity becomes innovation only when it delivers value, matching the iPhone example given."}, {"q": "USB transitioning to USB Type-C is used as an example of which type of change?", "options": ["Disruptive innovation", "Incremental invention", "Wicked problem resolution", "Functional fixedness"], "answer": 1, "explanation": "USB \u2192 USB Type-C is listed under Incremental Invention \u2014 small but meaningful improvements to an existing product."}, {"q": "Netflix replacing DVD rental stores is given as an example of which concept?", "options": ["Incremental invention", "Disruptive innovation", "Functional fixedness", "Conformity"], "answer": 1, "explanation": "The Disruptor/What it replaced table lists Netflix replacing DVD rental stores under Disruptive Innovation \u2014 a new model that transforms markets."}, {"q": "A city is trying to solve homelessness \u2014 an issue with no single right answer, many interdependent causes, and solutions that can only be judged 'better or worse.' What kind of problem is this?", "options": ["Well-defined problem", "Ill-defined problem", "Wicked problem", "Technical problem"], "answer": 2, "explanation": "Wicked problems are complex and interconnected, judged as better or worse rather than right or wrong \u2014 the notes give climate, poverty, and healthcare as examples, matching homelessness."}, {"q": "Solving a quadratic equation has one correct answer and clear constraints. What category of problem is this, per the Unit 1 framework?", "options": ["Wicked problem", "Ill-defined problem", "Well-defined problem", "Diffuse problem"], "answer": 2, "explanation": "Well-defined problems have clear goals, constraints, and a solution, with equations given as an explicit example."}, {"q": "Designing a new marketing strategy has unclear goals and many possible solution paths, but is not as deeply interconnected as a societal crisis. This is classified as:", "options": ["A well-defined problem", "A wicked problem", "An ill-defined problem", "A focused-mode problem"], "answer": 2, "explanation": "The notes list 'marketing strategy' explicitly under Ill-Defined problems: unclear goals or paths with many possible solutions."}, {"q": "Herbert Simon's contribution in the 1969\u201370s, as shown on the Design Thinking history timeline, was to frame design as:", "options": ["A wicked problem", "A way of thinking", "A five-stage process", "A human-centred design lens"], "answer": 1, "explanation": "The timeline credits Herbert Simon (1969\u201370s) with framing 'design as a way of thinking.'"}, {"q": "According to Lawson's Experiment cited in the history timeline, what is the key behavioural difference between scientists and designers when solving problems?", "options": ["Scientists test rapidly while designers analyse first", "Scientists are problem-focused and analyse thoroughly before proposing solutions; designers are solution-focused and test many solutions rapidly through iteration", "There is no meaningful difference between the two groups", "Designers never analyse a problem before solving it"], "answer": 1, "explanation": "The notes state scientists are problem-focused (analyse thoroughly before proposing solutions) while designers are solution-focused (create and test many solutions rapidly, learning through iteration)."}, {"q": "A team follows Empathize \u2192 Define \u2192 Ideate \u2192 Prototype \u2192 Test, then loops back to Empathize after testing reveals a wrong assumption. Which framework are they using, and what does the dashed feedback arrow represent?", "options": ["The IDEO framework; it shows feasibility feeding into viability", "The Stanford d.school framework; testing feeds back into empathy, since the process is iterative not linear", "The AEIOU framework; it shows activities feeding into environment", "The Waterfall model; it shows testing feeding into shipping"], "answer": 1, "explanation": "This is the Stanford d.school's five-stage framework; the notes explicitly say 'the dashed arrow is the whole point: testing feeds back into empathy. The process is iterative, not linear.'"}, {"q": "A concept is technically feasible and economically viable, but nobody actually wants it. Using the IDEO Human-Centred Design lens, which condition is missing, and what is the likely outcome?", "options": ["Viability is missing, so the product will be economically unsustainable", "Feasibility is missing, so the product cannot be built", "Desirability is missing, so the concept will fail in practice despite meeting the other two conditions", "Nothing is missing \u2014 meeting two of three lenses is sufficient for genuine innovation"], "answer": 2, "explanation": "The IDEO framework requires all three lenses (Desirability, Feasibility, Viability) to overlap; meeting only one or two produces a concept that fails in practice \u2014 here, desirability (do people want this?) is missing."}, {"q": "A software company finishes requirements gathering, then design, then development, then testing \u2014 strictly in that order, with user feedback only collected at the very end. Which model does this describe, and what is its key weakness according to the notes?", "options": ["Human-Centred Design; its weakness is excessive iteration", "Waterfall; user feedback comes at the end, so changes are costly", "The d.school framework; its weakness is that it lacks a testing phase", "Agile; its weakness is unclear requirements"], "answer": 1, "explanation": "This is the Waterfall model \u2014 linear, step-by-step, with each phase finished before the next; the notes state feedback comes at the end, so changes are costly, contrasted with HCD's iterative loop."}, {"q": "Airbnb's early data showed low bookings and flat revenue, but the numbers alone didn't explain why. What did the founders do to uncover the real problem, and what did they find?", "options": ["They ran a large-scale online survey and found pricing was too high", "They flew to visit hosts personally, discovering listings had poor-quality amateur photographs that discouraged bookings", "They hired a marketing agency to redesign the logo", "They lowered prices across all listings without further investigation"], "answer": 1, "explanation": "The case study describes the founders personally visiting hosts in New York and discovering poor-quality photos were discouraging bookings \u2014 an empathy-driven insight the data alone couldn't reveal."}, {"q": "What was the actual intervention Airbnb's founders used to fix the booking problem, and why is it described as significant despite being simple?", "options": ["They built an AI photo-enhancement tool; it was significant because it was highly scalable", "They rented a camera and photographed listings themselves; it is called out as an intervention that does not scale, which is exactly why nobody had tried it", "They offered cash refunds to hosts; it was significant because it solved the problem instantly", "They removed low-quality listings from the platform; it was significant because it improved average ratings"], "answer": 1, "explanation": "The notes state they rented a camera and photographed the listings themselves, calling it 'a simple, empathy-driven intervention \u2014 and one that does not scale, which is exactly why nobody had tried it.'"}, {"q": "Google Glass (2013) had cutting-edge technology but failed commercially. According to the case study, which of the following was NOT listed as a reason for its failure?", "options": ["Social concerns about being recorded", "An awkward design that drew unwanted attention", "A hardware defect that caused frequent crashes", "No clear use case and a high price of $1,500"], "answer": 2, "explanation": "The listed reasons were social concerns, awkward design, no clear use case, and price \u2014 a hardware defect/crashing issue is not mentioned anywhere in the case study."}, {"q": "Google later relaunched Glass as the 'Enterprise Edition' for warehouse and factory technicians, and it succeeded in that context. What broader lesson does the case study draw from this?", "options": ["Wearable technology never succeeds in consumer markets", "A product is never simply good or bad in the abstract \u2014 it is good or bad for someone, depending on user desirability", "Price is the only factor that determines product success", "Enterprise customers always have lower expectations than consumers"], "answer": 1, "explanation": "The notes conclude: 'A product is never simply good or bad \u2014 it is good or bad for someone,' using the Enterprise Edition's success with a different user group as evidence."}, {"q": "Dr. V founded Aravind Eye Hospital after realising cataract surgery already existed and worked medically. What did he identify as the actual problem?", "options": ["A shortage of trained surgeons worldwide", "Access \u2014 surgery cost more than most rural patients earned in months, hospitals were far, and surgeons were scarce", "Poor quality of the surgical technique itself", "Lack of government funding for healthcare"], "answer": 1, "explanation": "The case study states the problem was not medical \u2014 cataract surgery worked \u2014 but access: cost, distance, and scarcity of surgeons for rural patients."}, {"q": "Dr. V reframed his challenge by asking how McDonald's serves millions of people the same product, consistently, cheaply, anywhere. What design technique does the case study say this exemplifies, to be practised further in Unit 3?", "options": ["Functional fixedness reduction", "Analogous inspiration \u2014 drawing on a completely unrelated industry", "The Five Whys technique", "The AEIOU observation framework"], "answer": 1, "explanation": "The notes explicitly call this 'an example of analogous inspiration, a technique you will practise in Unit 3' \u2014 studying the fast-food assembly line as a design reference."}, {"q": "At Aravind Eye Care, paying patients choose a higher comfort tier, but free and paying patients receive the same surgeons and the same quality of surgery. Which principle from the 'Lessons Learned' does this best illustrate?", "options": ["Affordability can be designed \u2014 it is an outcome of process, not only of subsidy", "Dignity is a design requirement \u2014 only the comfort tier differs, not the quality of care", "The best analogy often comes from a completely unrelated industry", "Cross-subsidy pricing is unnecessary for financial sustainability"], "answer": 1, "explanation": "The notes state 'Dignity is a design requirement. Free patients receive the same surgery and the same surgeons as paying ones. Only the comfort tier differs' \u2014 directly matching the scenario."}, {"q": "In 'Spot the Mistake 1.1', a team decides to build an attendance app first, and only afterward surveys students to find out which features they want in it. What is the giveaway that this is NOT genuine Design Thinking?", "options": ["Surveys are never a valid research method in Design Thinking", "The solution (an app) was decided before any user research was done, reversing the empathize-first order", "Attendance apps are inherently poor product ideas", "The team should have interviewed faculty instead of students"], "answer": 1, "explanation": "This matches the 'ordinary engineering wearing a Design Thinking label' pattern \u2014 the solution was chosen before empathizing with users, when Design Thinking should begin with understanding needs before proposing solutions."}, {"q": "In the same 'Spot the Mistake 1.1' set, a team's first three prototypes were rejected by users, so they changed the problem statement. Why does this represent genuine Design Thinking?", "options": ["Because they kept the same prototype and just changed the marketing", "Because user feedback (testing) fed back into redefining the problem, reflecting the iterative empathize-test loop", "Because three prototypes is the correct number required by the process", "Because changing the problem statement guarantees success"], "answer": 1, "explanation": "This reflects the iterative nature of Design Thinking \u2014 test results looping back to redefine the problem \u2014 consistent with the d.school framework's iterative arrow described earlier in the unit."}], "unit2": [{"q": "A teacher assumes students are 'just not interested' in online learning, rather than investigating why they struggle. What does the Unit 2 material say is missing from this teacher's approach?", "options": ["Sympathy", "Empathy \u2014 seeing the world from the user's (student's) point of view instead of assuming", "Computational empathy", "Quantitative research"], "answer": 1, "explanation": "The notes use exactly this example: 'A teacher understanding why students struggle with online learning \u2014 rather than assuming they are simply not interested' as the model of empathy in practice."}, {"q": "A colleague says, 'Poor first-years, getting lost on campus must be awful,' but does nothing further. According to the Sympathy/Empathy/Compassion table, this statement reflects:", "options": ["Compassion, because it shows care", "Empathy, because it names a specific problem", "Sympathy, because it feels for someone from a distance without action", "Computational empathy, because it involves a system"], "answer": 2, "explanation": "The table defines Sympathy as 'feeling for someone, from a distance,' with the example line 'Poor first-years, getting lost must be awful' given verbatim as the sympathy example."}, {"q": "A team follows three first-years for a morning and discovers the block numbering resets in each wing, then decides to renumber the wing signage that same week. According to the table, this progression demonstrates:", "options": ["Sympathy only", "Empathy only, without further action", "Compassion \u2014 empathy plus the decision to act", "Computational empathy"], "answer": 2, "explanation": "The table defines Compassion as 'empathy plus the decision to act,' with the exact example: observing the wing numbering issue (empathy) followed by 'renumbering the wing signage this week' (the action, i.e., compassion)."}, {"q": "A UX researcher who is also a student says, 'I'm a student too, so I know what students need,' and designs based only on their own experience. What mistake does Unit 2 call this?", "options": ["The say-do gap", "Assuming you are the user \u2014 letting your own experience become the whole sample", "The expertise trap", "Functional fixedness"], "answer": 1, "explanation": "This is 'The Most Common Mistake' \u2014 assuming you know what users want because you are a user yourself, turning your own experience into the whole sample instead of one hypothesis to check."}, {"q": "Netflix recommending content 'to suit mood' and Spotify 'matching listening habits' are both given as examples of which concept?", "options": ["The say-do gap", "Computational empathy \u2014 applying empathy to software using AI to understand and respond to emotions/behaviour", "Field observation", "The AEIOU framework"], "answer": 1, "explanation": "Computational empathy is defined as applying empathy to software development using AI to understand and respond to human emotions and behaviour; Netflix and Spotify are given as explicit examples."}, {"q": "During India's COVID-19 vaccination drive, planners had to serve over a billion people with widely varying smartphone access, connectivity, languages, and digital literacy. What was the key empathy-driven insight behind CoWIN's design, and what did the team build in response?", "options": ["A single rigid mobile-only flow would exclude millions, so they built multiple assisted pathways (self, helpdesk, on-site) with a common backend and open APIs", "Everyone has a smartphone, so a single mobile app was sufficient", "Only urban users needed to be considered, since they are the majority of vaccine recipients", "The problem was purely a hardware supply issue, unrelated to interface design"], "answer": 0, "explanation": "The case study states the key insight was that one rigid flow would exclude millions, so the team built multiple assisted pathways, a common backend with many front-ends, QR-verifiable certificates, and open slot APIs."}, {"q": "A team wants to understand WHY students skip morning classes \u2014 exploring reasons and generating insights from a small group of 10 students. Which research approach fits best, and why?", "options": ["Quantitative, because it involves counting students", "Qualitative, because it focuses on understanding why and how, using a small purposive sample suited for exploring problems", "Neither \u2014 this requires an A/B test", "Quantitative, because 10 is a large enough sample size"], "answer": 1, "explanation": "Qualitative research focuses on understanding why and how, typically with 5\u201320 participants, and is best for exploring problems and generating insights \u2014 matching this scenario exactly."}, {"q": "A product team wants to measure how many of 500 users abandon their shopping cart, using analytics data. Which research type is this, and what is it best used for?", "options": ["Qualitative research, best for generating insights", "Quantitative research, best for validating hypotheses and measuring scale", "Field observation, best for ethical research", "Computational empathy, best for AI systems"], "answer": 1, "explanation": "Quantitative research measures what and how many, using large samples (100+) and methods like analytics; it is best for validating hypotheses and measuring at scale."}, {"q": "A team first conducts interviews to discover why users abandon an app, then runs a large-scale survey to confirm how widespread that reason is. What does Unit 2 call this sequencing?", "options": ["An invalid research design, since you cannot combine both methods", "The correct sequence \u2014 qualitative research to discover insights, then quantitative research to validate them at scale, since they are partners, not rivals", "Reversed \u2014 quantitative should always come first", "Irrelevant, since only one method should ever be used per project"], "answer": 1, "explanation": "The notes state explicitly: 'Use qualitative research to discover insights, then use quantitative research to validate them at scale. They are partners, not rivals.'"}, {"q": "A designer sits quietly in a library for an hour, taking notes on what students actually do, without asking them any questions or interrupting them. This method is called:", "options": ["A structured interview", "Field observation \u2014 observing users in their natural environment rather than asking what they do", "A quantitative survey", "Computational empathy"], "answer": 1, "explanation": "Field observation is defined as observing users in their natural environments; 'be a fly on the wall \u2014 do not interrupt or influence behaviour, take notes discreetly' directly matches this scenario."}, {"q": "At a photocopy shop, an observer notes: 'Four of eleven people left without printing after asking the price.' Which AEIOU category does this specific observation most directly capture?", "options": ["Environment", "Objects", "Activities", "Users"], "answer": 2, "explanation": "This is recorded under the 'A' (Activities) row of the worked example, describing what people did \u2014 queuing, asking price, and leaving."}, {"q": "In the same photocopy shop worked example, the observer notes: 'Single counter, one printer, no seating. Fan is loud... Rate card is handwritten and taped at knee height.' Which AEIOU letter does this belong to?", "options": ["Interactions", "Environment", "Objects", "Activities"], "answer": 1, "explanation": "This is recorded under 'E' (Environment) \u2014 the physical space, its lighting/noise/layout factors."}, {"q": "The observer notes: 'The operator asks colour or black? every single time \u2014 the rate card does not answer it.' Which AEIOU category captures this?", "options": ["Objects", "Users", "Interactions \u2014 how users engage with people, products, or systems", "Activities"], "answer": 2, "explanation": "This is recorded under 'I' (Interactions), which covers engagement between users and people/products/systems \u2014 here, the repeated verbal exchange with the operator."}, {"q": "The observer wrote 'The shop is badly managed' and 'Students are impatient' in their notes. What is the specific problem with these two entries, according to the worked example?", "options": ["They are too long to be useful", "They are judgements, not observations \u2014 the observer should record factual behaviour, not interpretations", "They should have been written in the Objects category instead", "They contain personally identifiable information"], "answer": 1, "explanation": "The notes explicitly flag these two lines as 'What the Observer Did Not Write... Those are judgements, not observations,' reinforcing that AEIOU notes should record fact, not opinion."}, {"q": "Before interviewing a stranger on campus for a class project, a student is expected to read a script stating who they are, what the interview is for, that it's voluntary, and that names won't be recorded. This is an example of:", "options": ["The Five Whys technique", "The verbal consent script, required as part of research ethics before fieldwork", "An empathy map", "A pain point audit"], "answer": 1, "explanation": "This matches the consent script provided verbatim in the notes, which must be read aloud before every interview as part of research ethics."}, {"q": "According to the Research Ethics and Consent guidelines, which of the following actions is explicitly discouraged, even during legitimate fieldwork?", "options": ["Meeting in open, public, daylight areas", "Recording participants by pseudonym or initials", "Photographing individual people during the interview \u2014 sketching the scene is preferred instead", "Working in pairs for safety"], "answer": 2, "explanation": "Rule 4 states: 'Do not photograph people. Sketch the scene instead' \u2014 the other three options are all explicitly recommended practices, not discouraged ones."}, {"q": "A researcher watches a user open a food delivery app, add items to cart, and hesitate before placing the order \u2014 recording only these observable actions without yet interpreting them. Which stage of the What-How-Why framework is this?", "options": ["WHY", "HOW", "WHAT \u2014 observing what the user does, not what you think they do", "This is not part of the What-How-Why framework"], "answer": 2, "explanation": "The WHAT stage is defined as observing what users do (not what you think they do) and recording actions/events objectively \u2014 matching the scenario of noting actions without interpretation."}, {"q": "A researcher notices the same food-delivery user scrolls back and forth to read details and re-reads the delivery fees multiple times. Which stage of What-How-Why captures this kind of observation, and what does it reveal?", "options": ["WHAT \u2014 it reveals what tools are used", "HOW \u2014 it reveals how the task is performed and where challenges occur, through effort and behaviour", "WHY \u2014 it reveals the user's underlying motivation directly", "None of the stages; this belongs in the AEIOU framework only"], "answer": 1, "explanation": "The HOW stage explores how users complete tasks by observing actions, effort, emotions, and challenges \u2014 the example given is exactly scrolling back and forth and re-reading fees."}, {"q": "After observing the WHAT and HOW of a user's food delivery experience, the researcher infers the user 'wants the best value for money' and 'feels unsure about the final choice.' The notes caution that this stage involves:", "options": ["Pure fact recording, with no interpretation involved", "Inference \u2014 carefully labelled as inference \u2014 uncovering motivations, emotions, and needs behind the behaviour", "A leading interview question", "A computational empathy system"], "answer": 1, "explanation": "The WHY stage is described as the point 'where inference \u2014 carefully labelled as inference \u2014 begins,' uncovering motivations, emotions and needs behind observed behaviour."}, {"q": "An interviewer asks a user: 'Would you use a feature that reminds you about deadlines?' What is the primary flaw with this question, based on the 'characteristics of good questions' guidance?", "options": ["It's too short to be useful", "It is hypothetical rather than about the user's actual current experience", "It uses complex vocabulary the user might not understand", "It is a leading question about parking"], "answer": 1, "explanation": "Good questions are exploratory and user-focused, about actual experiences rather than hypotheticals; 'Would you use a feature that...' is a hypothetical question, one of the fault types named in Spot the Mistake 2.1."}, {"q": "An interviewer asks: 'Most students say the Wi-Fi is bad. Do you agree?' What specific flaw does this question demonstrate?", "options": ["It is a leading question, since it primes the respondent with others' opinions before asking theirs", "It is a closed yes/no question only", "It focuses on the user's life rather than a hypothetical", "It correctly follows the open-ended question format"], "answer": 0, "explanation": "This is a leading question \u2014 telling the respondent what 'most students' think before asking their opinion biases the answer toward agreement."}, {"q": "An interviewer, frustrated with a student's complaint about long queues, responds: 'Why don't you just go earlier to avoid the queue?' Beyond being poorly phrased, what deeper problem does this question create, per the notes?", "options": ["It is too polite and won't get an honest answer", "It shifts into offering the interviewer's own solution/judgement rather than exploring the user's life and experience, which can shut down honest sharing", "It is a leading question about food quality", "It has no deeper problem beyond phrasing"], "answer": 1, "explanation": "Question 6 is flagged as having 'a second problem beyond its phrasing' \u2014 it steers into the interviewer's own suggested solution/judgement rather than staying focused on the user's actual experience, which damages the interview by shutting down honest disclosure."}, {"q": "During an interview, a student pauses for four seconds before answering a question about their study habits. The interviewer resists the urge to fill the silence. Which interviewing technique is being applied, and why is it valuable?", "options": ["Follow emotions \u2014 because pauses indicate frustration", "Embrace silence \u2014 because people fill silence with the thing they were not going to say", "Grand tour \u2014 because it covers a full day's routine", "Seek contradictions \u2014 because pauses reveal inconsistency"], "answer": 1, "explanation": "Embrace silence is described as waiting three to five seconds, since people fill silence with the thing they were not going to say \u2014 described as the hardest and most productive technique."}, {"q": "An interviewer notices the participant said earlier that the app is 'easy to use,' but just described struggling to find a basic feature. The interviewer gently says, 'Earlier you said X, and just now Y...' Which technique is this?", "options": ["Tell me a story", "Show me", "Seek contradictions \u2014 done curiously, never accusingly", "The Five Whys"], "answer": 2, "explanation": "This matches 'Seek contradictions,' described as pointing out an inconsistency curiously, never accusingly, using the same phrasing pattern given in the notes."}, {"q": "In the Five Whys worked example, the student's original complaint was 'the library is too crowded,' and after five rounds of 'why,' the team discovered the real issue was that evaluations test memorisation over understanding, making students feel they are wasting study time. What does the notes highlight about the Why-1 answer compared to the Why-5 answer?", "options": ["Why-1 and Why-5 are always identical in every Five Whys exercise", "The first Why is almost never the real one; the process moved from 'build a bigger library' to 'students need to feel their study time is well spent'", "The Five Whys technique should stop after the first Why for efficiency", "Why-5 revealed an unrelated new problem, discarding the original complaint"], "answer": 1, "explanation": "The notes conclude: 'The first Why is almost never the real one,' contrasting the starting point (build a bigger library) with the ending point (students need to feel their study time is well spent)."}, {"q": "A user says in an interview 'I want faster checkout,' but observation later reveals they actually crave a feeling of being in control of the process. According to Unit 2, how should these two pieces of information be classified?", "options": ["Both are explicit needs, since the user described both aloud", "'Faster checkout' is an explicit need (stated clearly); the feeling of control is an implicit need (unspoken, revealed through observation/analysis)", "Both are implicit needs, since neither was directly observed", "This distinction does not apply to checkout processes"], "answer": 1, "explanation": "Explicit needs are what users say they want, stated clearly in interviews ('I want faster checkout' is the notes' own example); implicit needs are unspoken and revealed through observation/analysis, such as needing to feel in control."}, {"q": "In a taste test, shoppers overwhelmingly said they preferred a lighter roast of coffee, but when offered a free cup, most reached for the dark roast. What is this phenomenon called, and what rule follows from it?", "options": ["The expertise trap; ignore what people do and trust what they say", "The say-do gap; ask what people do, watch what people choose \u2014 stated preference reflects self-image, observed behaviour reflects need", "Computational empathy; trust AI recommendations over stated preferences", "Functional fixedness; people are fixed on traditional roast preferences"], "answer": 1, "explanation": "This is the exact coffee example given for the say-do gap; the rule is 'ask what people do; watch what people choose. Stated preference is evidence about self-image; observed behaviour is evidence about need.'"}, {"q": "A student records a pain point as 'the printing process is inefficient and frustrating' but has no quote or count to back it up. What does Unit 2 say should happen with such an entry?", "options": ["It should be included as-is since impressions are sufficient evidence", "Every pain point needs evidence \u2014 a quote or a count \u2014 so the student should identify the weakest-evidence pain point and go find supporting evidence", "It should be deleted immediately with no further action", "Pain points do not require evidence, only personas do"], "answer": 1, "explanation": "The notes state 'Every pain point you record needs evidence \u2014 a quote or a count' and prompt reflection on which pain point has the weakest evidence and what to go find out."}, {"q": "Namma Yatri began by empathising with auto-rickshaw drivers rather than riders, discovering that commission cuts, unpredictable algorithm changes, and lack of appeal routes were core issues. What did the empathy work conclude was the deepest pain point?", "options": ["Price sensitivity among riders", "Powerlessness, not price", "Vehicle maintenance costs", "Traffic congestion in Bengaluru"], "answer": 1, "explanation": "The case study states explicitly: 'The deepest pain point was powerlessness, not price.'"}, {"q": "What broader, transferable lesson does the Namma Yatri case study draw for design practice in general?", "options": ["Ride-hailing apps should always prioritise the rider's experience over the driver's", "Empathising with the person providing a service \u2014 not only the person consuming it \u2014 can produce radically different solutions", "Zero-commission models are financially unsustainable in the long run", "Open protocols are always inferior to proprietary platforms"], "answer": 1, "explanation": "The notes conclude: 'Empathising with the person providing the service \u2014 not only the person consuming it \u2014 produces radically different solutions,' citing the zero-commission, subscription-based outcome."}, {"q": "A team writes a persona line: 'Rahul loves cricket and drinks three coffees a day,' even though no interview participant said this. What rule does this violate, and how should the team fix it?", "options": ["No rule is violated; personas are meant to be creative fiction", "It violates the rule that a persona is a research summary, not an invented character \u2014 every line should be traceable to something a real person said or did, so this line should be deleted", "It violates the AEIOU framework specifically", "It violates the say-do gap rule"], "answer": 1, "explanation": "The notes state 'A persona is a research summary, not a character you invented... If you cannot point to the interview it came from, delete it' \u2014 and give this exact invented detail as the 'Invented' (bad) example."}, {"q": "A team creates a broad category called 'working professionals' to segment their market, without giving this group a name, age, or individual quote. Is this a persona or a target archetype, and why?", "options": ["A persona, because it describes a group of users", "A target archetype, because it is a broad group with shared behaviours/characteristics rather than one individual profile with a name and quote", "Neither \u2014 this is an empathy map", "A persona, because personas can describe multiple people at once"], "answer": 1, "explanation": "Target archetypes are broad groups of users with similar behaviours/characteristics/needs (e.g., 'working professionals'), distinct from a persona, which is one fictional individual with a name, age, goal, challenge, and quote."}, {"q": "In an empathy map, a user says 'the app is easy to use' (SAYS) but is observed rewatching the same lecture three times and searching elsewhere for materials (DOES). What does Unit 2 say about this kind of gap?", "options": ["It should be ignored since SAYS is always more reliable than DOES", "It is usually the best opportunity \u2014 where SAYS and DOES disagree signals a hidden problem worth investigating", "It means the empathy map was built incorrectly and should be discarded", "It means the user is being deliberately dishonest and should be excluded from research"], "answer": 1, "explanation": "The notes state: 'She says the app is easy \u2014 and rewatches the same lecture three times. That gap is usually your best opportunity' \u2014 highlighting SAYS/DOES gaps as valuable insight sources, not flaws to discard."}, {"q": "A team writes the problem statement: 'We need a mobile app.' What is the core weakness of this statement, per the Poor/Good problem-statement comparison?", "options": ["It is too long and needs to be shortened", "It has no user, no need, no insight \u2014 and the solution is already baked in", "It should have specified which app store to use", "It correctly follows the [User] needs [need] because [insight] format"], "answer": 1, "explanation": "The notes describe this exact line as the 'Poor' example: 'No user, no need, no insight \u2014 and the solution is already baked in.'"}, {"q": "A team proposes the How Might We question: 'How might we add a red button to the timetable screen?' What is the specific flaw here, according to the Goldilocks Test?", "options": ["It is too broad, giving the team nothing usable", "It is too narrow \u2014 the solution (a red button) has been smuggled into the question, rather than framing a real human need", "It correctly balances breadth and specificity", "It should have asked about a blue button instead"], "answer": 1, "explanation": "The Goldilocks Test states that a question this narrow has 'smuggled the solution into the question' \u2014 the aim is a real human need with no solution attached, neither too broad nor too narrow."}]};
+
+const UNIT_META = {
+  unit1: { title: "Unit 1", sub: "Foundations of Learning, Creativity &amp; Design Thinking" },
+  unit2: { title: "Unit 2", sub: "Empathy, Observation &amp; Problem Identification" }
+};
+
+let state = {
+  screen: 'menu',
+  unitKey: null,
+  order: [],
+  idx: 0,
+  selected: null,
+  locked: false,
+  correctCount: 0,
+  answers: [] // {correct: bool}
+};
+
+const app = document.getElementById('app');
+const footerNote = document.getElementById('footerNote');
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function renderMenu() {
+  footerNote.textContent = 'INT335 · Continuous Assessment practice · scenario-based MCQs';
+  let html = '';
+  html += '<div class="menu-section"><h2>Choose what to practice</h2>';
+
+  const totalAll = DATA.unit1.length + DATA.unit2.length;
+  html += `<button class="unit-btn" onclick="startQuiz('all')">
+    <div><div>All Questions (Full Mock)</div><div class="meta">${totalAll} questions · both units mixed</div></div>
+    <span class="arrow">›</span>
+  </button>`;
+
+  for (const key of ['unit1', 'unit2']) {
+    const meta = UNIT_META[key];
+    const count = DATA[key].length;
+    html += `<button class="unit-btn" onclick="startQuiz('${key}')">
+      <div><div>${meta.title}</div><div class="meta">${meta.sub} · ${count} questions</div></div>
+      <span class="arrow">›</span>
+    </button>`;
+  }
+  html += '</div>';
+  app.innerHTML = html;
+}
+
+function startQuiz(key) {
+  let pool;
+  if (key === 'all') {
+    pool = DATA.unit1.map(q => ({...q, unit: 'Unit 1'})).concat(DATA.unit2.map(q => ({...q, unit: 'Unit 2'})));
+  } else {
+    pool = DATA[key].map(q => ({...q, unit: UNIT_META[key].title}));
+  }
+  state = {
+    screen: 'quiz',
+    unitKey: key,
+    pool: pool,
+    order: shuffle([...Array(pool.length).keys()]),
+    idx: 0,
+    selected: null,
+    locked: false,
+    correctCount: 0,
+    answers: []
+  };
+  renderQuiz();
+}
+
+function currentQuestion() {
+  return state.pool[state.order[state.idx]];
+}
+
+function renderQuiz() {
+  const q = currentQuestion();
+  const total = state.order.length;
+  const num = state.idx + 1;
+  const pct = Math.round(((state.idx) / total) * 100);
+
+  footerNote.textContent = `Question ${num} of ${total}`;
+
+  let optsHtml = '';
+  const letters = ['A', 'B', 'C', 'D'];
+  q.options.forEach((opt, i) => {
+    let cls = 'option';
+    if (state.locked) {
+      cls += ' locked';
+      if (i === q.answer) cls += ' correct';
+      else if (i === state.selected) cls += ' incorrect';
+      else cls += ' dimmed';
+    }
+    optsHtml += `<button class="${cls}" onclick="selectOption(${i})" ${state.locked ? 'disabled' : ''}>
+      <span class="letter">${letters[i]}</span>
+      <span>${opt}</span>
+    </button>`;
+  });
+
+  let feedbackHtml = '';
+  if (state.locked) {
+    const isCorrect = state.selected === q.answer;
+    feedbackHtml = `<div class="feedback-box show ${isCorrect ? 'correct-fb' : 'incorrect-fb'}">
+      <div class="feedback-verdict ${isCorrect ? 'correct-fb' : 'incorrect-fb'}">${isCorrect ? '✓ Correct' : '✗ Not quite'}</div>
+      ${q.explanation}
+    </div>`;
+  }
+
+  const isLast = state.idx === total - 1;
+  const nextLabel = state.locked ? (isLast ? 'See Results' : 'Next Question →') : 'Submit Answer';
+
+  app.innerHTML = `
+    <div class="progress-wrap">
+      <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+      <div class="progress-label">${num}/${total}</div>
+    </div>
+    <div class="qtop">
+      <span class="qtag">${q.unit}</span>
+      <span class="score-pill">Score: ${state.correctCount}/${state.answers.length}</span>
+    </div>
+    <p class="qtext">${q.q}</p>
+    <div class="options">${optsHtml}</div>
+    ${feedbackHtml}
+    <div class="nav-row">
+      <button class="btn btn-ghost" onclick="backToMenu()">Exit</button>
+      <button class="btn btn-primary" id="nextBtn" ${state.selected === null ? 'disabled' : ''} onclick="handleNext()">${nextLabel}</button>
+    </div>
+  `;
+}
+
+function selectOption(i) {
+  if (state.locked) return;
+  state.selected = i;
+  renderQuiz();
+}
+
+function handleNext() {
+  if (state.selected === null) return;
+  if (!state.locked) {
+    state.locked = true;
+    const q = currentQuestion();
+    const correct = state.selected === q.answer;
+    if (correct) state.correctCount++;
+    state.answers.push({ correct, q: q.q });
+    renderQuiz();
+    return;
+  }
+  // move to next
+  if (state.idx < state.order.length - 1) {
+    state.idx++;
+    state.selected = null;
+    state.locked = false;
+    renderQuiz();
+  } else {
+    renderResults();
+  }
+}
+
+function backToMenu() {
+  state.screen = 'menu';
+  renderMenu();
+}
+
+function renderResults() {
+  const total = state.answers.length;
+  const correct = state.correctCount;
+  const pct = Math.round((correct / total) * 100);
+  footerNote.textContent = 'Practice complete';
+
+  let icon = '📘';
+  let title = 'Keep practicing';
+  if (pct >= 85) { icon = '🏆'; title = 'Excellent work!'; }
+  else if (pct >= 70) { icon = '✅'; title = 'Good grasp!'; }
+  else if (pct >= 50) { icon = '📝'; title = 'Getting there'; }
+
+  let reviewHtml = '';
+  state.answers.forEach((a, i) => {
+    reviewHtml += `<div class="review-item ${a.correct ? 'right' : 'wrong'}">
+      <span class="rmark">${a.correct ? '✓' : '✗'}</span>
+      <span class="rtext">Q${i + 1}. ${a.q}</span>
+    </div>`;
+  });
+
+  app.innerHTML = `
+    <div class="results-icon">${icon}</div>
+    <div class="results-title">${title}</div>
+    <div class="results-sub">${UNIT_META[state.unitKey] ? UNIT_META[state.unitKey].title : 'Full Mock'} · ${total} questions</div>
+    <div class="score-ring-wrap">
+      <div class="score-big">${correct}<span>/${total}</span></div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-box correct-num"><div class="num">${correct}</div><div class="lbl">Correct</div></div>
+      <div class="stat-box incorrect-num"><div class="num">${total - correct}</div><div class="lbl">Incorrect</div></div>
+      <div class="stat-box"><div class="num">${pct}%</div><div class="lbl">Score</div></div>
+    </div>
+    <h2 style="font-size:0.78rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-soft);margin:0 0 10px;font-weight:700;">Review</h2>
+    <div class="review-list">${reviewHtml}</div>
+    <div class="nav-row">
+      <button class="btn btn-ghost" onclick="backToMenu()">Menu</button>
+      <button class="btn btn-primary" onclick="startQuiz(state.unitKey)">Retry This Set</button>
+    </div>
+  `;
+}
+
+renderMenu();
+</script>
+</body>
+</html>
